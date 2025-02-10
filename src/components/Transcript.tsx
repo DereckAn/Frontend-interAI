@@ -1,42 +1,72 @@
-'use client';
+import { useEffect, useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Brain } from 'lucide-react';
 
-import React, { useRef, useEffect } from 'react';
-import { useInterviewStore } from '../store/interviewStore';
+interface Message {
+  role: 'ai' | 'user';
+  content: string;
+  timestamp: Date;
+}
 
-export const Transcript: React.FC = () => {
-  const { transcript } = useInterviewStore();
-  const transcriptEndRef = useRef<HTMLDivElement>(null);
+interface TranscriptProps {
+  isListening: boolean;
+}
 
+export function Transcript({ isListening }: TranscriptProps) {
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  // Simulated initial message
   useEffect(() => {
-    transcriptEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [transcript]);
+    setMessages([
+      {
+        role: 'ai',
+        content: 'Hello! I\'m your AI interviewer today. Let\'s begin with your first question. Could you please introduce yourself and tell me about your background in technology?',
+        timestamp: new Date(),
+      },
+    ]);
+  }, []);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 h-[400px] overflow-y-auto">
-      <div className="space-y-4">
-        {transcript.map(({ id, speaker, text }) => (
+    <div className="p-4 space-y-4">
+      {messages.map((message, index) => (
+        <div
+          key={index}
+          className={`flex gap-4 ${
+            message.role === 'user' ? 'flex-row-reverse' : ''
+          }`}
+        >
+          <Avatar>
+            {message.role === 'ai' ? (
+              <>
+                <AvatarFallback>AI</AvatarFallback>
+                <AvatarImage>
+                  <Brain className="w-full h-full p-2" />
+                </AvatarImage>
+              </>
+            ) : (
+              <AvatarFallback>You</AvatarFallback>
+            )}
+          </Avatar>
           <div
-            key={id}
-            className={`flex ${
-              speaker === 'ai' ? 'justify-start' : 'justify-end'
+            className={`flex-1 rounded-lg p-4 ${
+              message.role === 'ai'
+                ? 'bg-secondary'
+                : 'bg-primary text-primary-foreground'
             }`}
           >
-            <div
-              className={`max-w-[80%] p-4 rounded-lg ${
-                speaker === 'ai'
-                  ? 'bg-blue-100 text-blue-900'
-                  : 'bg-green-100 text-green-900'
-              }`}
-            >
-              <div className="text-sm font-semibold mb-1">
-                {speaker === 'ai' ? 'AI Interviewer' : 'You'}
-              </div>
-              <div>{text}</div>
-            </div>
+            <p className="text-sm">{message.content}</p>
+            <time className="text-xs opacity-70 mt-2 block">
+              {message.timestamp.toLocaleTimeString()}
+            </time>
           </div>
-        ))}
-        <div ref={transcriptEndRef} />
-      </div>
+        </div>
+      ))}
+      
+      {isListening && (
+        <div className="flex items-center justify-center p-4 text-muted-foreground">
+          <span className="animate-pulse">Listening...</span>
+        </div>
+      )}
     </div>
   );
-};
+}

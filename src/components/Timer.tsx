@@ -1,31 +1,38 @@
-'use client';
+import { useEffect, useState } from 'react';
+import { Progress } from '@/components/ui/progress';
 
-import React, { useEffect } from 'react';
-import { Timer as TimerIcon } from 'lucide-react';
-import { useInterviewStore } from '../store/interviewStore';
+interface TimerProps {
+  duration: number; // Duration in seconds
+}
 
-export const Timer: React.FC = () => {
-  const { timeRemaining, updateTimeRemaining, isStarted } = useInterviewStore();
+export function Timer({ duration }: TimerProps) {
+  const [timeLeft, setTimeLeft] = useState(duration);
+  const [progress, setProgress] = useState(100);
 
   useEffect(() => {
-    if (!isStarted) return;
+    if (timeLeft <= 0) return;
 
-    const interval = setInterval(() => {
-      updateTimeRemaining(Math.max(0, timeRemaining - 1));
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        const newTime = prev - 1;
+        setProgress((newTime / duration) * 100);
+        return newTime;
+      });
     }, 1000);
 
-    return () => clearInterval(interval);
-  }, [timeRemaining, isStarted]);
+    return () => clearInterval(timer);
+  }, [timeLeft, duration]);
 
-  const minutes = Math.floor(timeRemaining / 60);
-  const seconds = timeRemaining % 60;
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
 
   return (
-    <div className="flex items-center space-x-2 text-lg font-semibold">
-      <TimerIcon className="w-6 h-6" />
-      <span>
-        {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
-      </span>
+    <div className="flex items-center gap-4 min-w-[200px]">
+      <Progress value={progress} className="w-full" />
+      <span className="text-sm font-medium">{formatTime(timeLeft)}</span>
     </div>
   );
-};
+}

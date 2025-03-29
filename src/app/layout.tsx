@@ -1,16 +1,22 @@
 import { Header } from "@/components/ui/shared/Header";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bodoni_Moda, Teachers } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Primary font - Teachers (using Inter as fallback if Teachers isn't available)
+const teachers = Teachers({
+  variable: "--font-teachers",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Secondary font for titles
+const bodoniModa = Bodoni_Moda({
+  variable: "--font-bodoni",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  //   display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -26,9 +32,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${teachers.className} ${bodoniModa.variable} antialiased`}
       >
-        {/* <Header /> */}
+        <Header />
         {children}
       </body>
     </html>

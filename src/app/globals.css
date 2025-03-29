@@ -2,7 +2,6 @@
 
 @plugin "tailwindcss-animate";
 
-
 @theme {
   --color-background: hsl(60 23.81% 95.882%);
   --color-foreground: hsl(358 26% 70%);
@@ -42,9 +41,13 @@ body {
   --radius: 0.6rem;
 }
 
-
 @layer base {
   body {
     @apply bg-background text-foreground;
   }
 }
+
+.scrollbar-hidden {
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+  }

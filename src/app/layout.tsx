@@ -35,7 +35,7 @@ export default function RootLayout({
         className={`${teachers.className} ${bodoniModa.variable} antialiased`}
       >
         <Header />
-        {children}
+        <main className="pt-24 px-5">{children}</main>
       </body>
     </html>
   );

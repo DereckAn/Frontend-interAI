@@ -37,7 +37,7 @@ export const JobDescription = () => {
   };
 
   return (
-    <section className="max-w-2xl w-1/2 mx-auto  my-8">
+    <section className="w-full my-8">
       <h2 
         className="text-xl sm:text-2xl font-semibold mb-4"
         style={{ fontFamily: "var(--font-bodoni)" }}

@@ -7,14 +7,23 @@ import { TopiCards } from "@/components/home/topics";
 export default function Home() {
   return (
     <>
-      <TopiCards />
-      {/* <div className="flex flex-col md:flex-row"> */}
-      <ResumeUpload />
-      <JobDescription />
-      <DifficultySelector />
-      <LanguageSelector />
+      {/* <div className="container mx-auto px-4"> */}
+        <TopiCards />
+        {/* Grid layout para los componentes principales */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+          {/* Columna izquierda */}
+          <div className="space-y-6">
+            <ResumeUpload />
+            <JobDescription />
+          </div>
+
+          {/* Columna derecha */}
+          <div className="space-y-6">
+            <DifficultySelector />
+            <LanguageSelector />
+          </div>
+        </div>
       {/* </div> */}
-      {/* <Hero /> */}
     </>
   );
 }

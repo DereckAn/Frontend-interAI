@@ -67,7 +67,7 @@ export const DifficultySelector = () => {
   const maxYears = currentOption.yearsRange[1];
 
   return (
-    <section className="max-w-2xl mx-auto my-8">
+    <section className="w-full my-8">
       <h2 
         className="text-xl sm:text-2xl font-semibold mb-4"
         style={{ fontFamily: "var(--font-bodoni)" }}

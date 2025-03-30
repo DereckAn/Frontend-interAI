@@ -8,6 +8,7 @@
   --color-borde: hsl(358 28% 47%);
   --color-texto: hsl(0 39% 15%);
   --color-pinko: hsl(358 28% 85%);
+  --color-gray2: hsl(none 0%  7.0588%)
 }
 
 @layer base {
@@ -28,6 +29,7 @@ body {
 :root {
   --background: var(--color-background);
   --foreground: var(--color-foreground);
+  --gray2: var(--color-gray2);
   --pinko: var(--color-pinko);
   --card: hsl(0 0% 100%);
   --card-foreground: var(--color-foreground);
@@ -43,7 +45,7 @@ body {
 
 @layer base {
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background ;
   }
 }
 

@@ -18,9 +18,9 @@ export const TopiCards = () => {
   };
 
   return (
-    <section className="bg-pinko rounded-xl p-3 sm:p-5 scrollbar-hidden">
+    <section className="bg-gray2/15 rounded-xl p-3 sm:p-5 scrollbar-hidden">
       <h2
-        className="text-xl sm:text-2xl font-semibold mb-2 sm:mb-4 text-borde"
+        className="text-xl sm:text-2xl font-semibold mb-2 sm:mb-4"
         style={{
           fontFamily: "var(--font-bodoni)",
         }}
@@ -60,8 +60,8 @@ export const TopiCards = () => {
                 )}
               </div>
               <div className="flex items-center gap-2 mt-2">
-                <Icon className="text-borde w-4 h-4 sm:w-5 sm:h-5" />
-                <p className="font-medium text-borde text-sm sm:text-base">
+                <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                <p className="font-medium text-sm sm:text-base">
                   {topic.label}
                 </p>
               </div>

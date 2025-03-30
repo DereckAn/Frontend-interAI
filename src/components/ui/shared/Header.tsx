@@ -23,11 +23,11 @@ export const Header = () => {
   };
 
   return (
-    <header className="fixed top-5 left-5 right-5 z-50 bg-pinko shadow-sm px-4 py-2 sm:px-6 lg:px-8 rounded-xl mx-auto flex justify-between items-center lg:max-h-[48px]">
+    <header className="fixed top-5 left-5 right-5 z-50 bg-gray2/15 shadow-sm px-4 py-2 sm:px-6 lg:px-8 rounded-xl mx-auto flex justify-between items-center lg:max-h-[48px]">
       <div className="flex items-center justify-start gap-3">
-        <Brain className="w-5 h-5 text-borde" />
+        <Brain className="w-5 h-5" />
         <h1
-          className="text-xl font-bold text-borde"
+          className="text-xl font-bold"
           style={{ fontFamily: "var(--font-bodoni)" }}
         >
           Interview Simulator
@@ -35,12 +35,12 @@ export const Header = () => {
       </div>
 
       {/* Desktop Navigation */}
-      <ul className="hidden md:flex items-center justify-center divide-x divide-borde/20">
+      <ul className="hidden md:flex items-center justify-center divide-x divide-gray2/20">
         {links.map((link) => (
           <li key={link.href}>
             <Link
               href={link.href}
-              className="flex items-center justify-center px-4 py-2 text-borde transition-colors duration-200 hover:bg-borde/20 rounded-md hover:text-borde/80"
+              className="flex items-center justify-center px-4 py-2 transition-colors duration-200 hover:bg-gray2/10 rounded-md"
             >
               {link.label}
             </Link>
@@ -50,7 +50,7 @@ export const Header = () => {
 
       {/* Mobile Menu Button */}
       <button 
-        className="md:hidden text-borde p-2 rounded-md hover:bg-borde/20"
+        className="md:hidden p-2 rounded-md hover:bg-gray2/10"
         onClick={toggleMenu}
         aria-label="Toggle menu"
       >
@@ -59,13 +59,13 @@ export const Header = () => {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-pinko shadow-md rounded-b-xl mt-1 py-2 z-50">
+        <div className="md:hidden absolute top-full left-0 right-0 shadow-md rounded-b-xl mt-1 py-2 z-50">
           <ul className="flex flex-col items-center">
             {links.map((link) => (
               <li key={link.href} className="w-full">
                 <Link
                   href={link.href}
-                  className="flex items-center justify-center px-4 py-3 text-borde transition-colors duration-200 hover:bg-borde/20 hover:text-borde/80"
+                  className="flex items-center justify-center px-4 py-3 transition-colors duration-200 hover:bg-borde/20"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}

@@ -1,9 +1,11 @@
-export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
+// types/index.ts
+
+export type DifficultyLevel = "beginner" | "intermediate" | "advanced";
 
 export interface Question {
   id: string;
   text: string;
-  category: 'architecture' | 'programming' | 'scenario' | 'experience';
+  category: "architecture" | "programming" | "scenario" | "experience";
   difficulty: DifficultyLevel;
   expectedDuration: number; // in seconds
 }
@@ -14,7 +16,7 @@ export interface InterviewState {
   difficulty: DifficultyLevel;
   transcript: Array<{
     id: string;
-    speaker: 'ai' | 'user';
+    speaker: "ai" | "user";
     text: string;
     timestamp: number;
   }>;

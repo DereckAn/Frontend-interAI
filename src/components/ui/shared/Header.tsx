@@ -23,7 +23,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="fixed top-5 left-5 right-5 z-50 bg-gray2/15 shadow-sm px-4 py-2 sm:px-6 lg:px-8 rounded-xl mx-auto flex justify-between items-center lg:max-h-[48px]">
+    <header className="fixed top-5 text-background left-5 right-5 z-50 bg-gray2/50 backdrop-blur-sm shadow-sm px-4 py-2 sm:px-6 lg:px-8 rounded-xl mx-auto flex justify-between items-center lg:max-h-[48px]">
       <div className="flex items-center justify-start gap-3">
         <Brain className="w-5 h-5" />
         <h1
@@ -59,7 +59,7 @@ export const Header = () => {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 shadow-md rounded-b-xl mt-1 py-2 z-50">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-gray2/50 backdrop-blur-sm shadow-md rounded-b-xl mt-1 py-2 z-50">
           <ul className="flex flex-col items-center">
             {links.map((link) => (
               <li key={link.href} className="w-full">

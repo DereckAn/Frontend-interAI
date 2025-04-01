@@ -1,6 +1,6 @@
 // types/index.ts
 
-export type DifficultyLevel = "beginner" | "intermediate" | "advanced";
+// export type DifficultyLevel = "beginner" | "intermediate" | "advanced";
 
 export interface Question {
   id: string;

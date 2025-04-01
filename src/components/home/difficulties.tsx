@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Slider } from '@/components/ui/slider';
 import { Sparkles, Zap, Trophy } from 'lucide-react';
+import { useFormDataStore } from '@/store/formDataStore';
 
-type DifficultyLevel = 'junior' | 'mid' | 'senior';
 
 interface DifficultyOption {
   value: DifficultyLevel;
@@ -16,26 +16,29 @@ interface DifficultyOption {
 }
 
 export const DifficultySelector = () => {
-  const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel>('mid');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel>('Mid-Level');
   const [yearsOfExperience, setYearsOfExperience] = useState<number>(3);
+  
+  // Agregar el store para guardar la dificultad
+  const setDifficultyLevel = useFormDataStore(state => state.setDifficultyLevel);
 
   const difficultyOptions: DifficultyOption[] = [
     {
-      value: 'junior',
+      value: 'Junior',
       label: 'Junior',
       icon: <Sparkles className="w-5 h-5" />,
       description: 'Basic concepts and fundamentals',
       yearsRange: [0, 2],
     },
     {
-      value: 'mid',
+      value: 'Mid-Level',
       label: 'Mid-Level',
       icon: <Zap className="w-5 h-5" />,
       description: 'Intermediate topics and practical scenarios',
       yearsRange: [2, 5],
     },
     {
-      value: 'senior',
+      value: 'Senior',
       label: 'Senior',
       icon: <Trophy className="w-5 h-5" />,
       description: 'Advanced concepts and system design',
@@ -51,11 +54,18 @@ export const DifficultySelector = () => {
     if (option) {
       const defaultYears = Math.floor((option.yearsRange[0] + option.yearsRange[1]) / 2);
       setYearsOfExperience(defaultYears);
+      
+      // Guardar en el store global
+      setDifficultyLevel(difficulty, defaultYears);
     }
   };
 
   const handleYearsChange = (value: number[]) => {
-    setYearsOfExperience(value[0]);
+    const years = value[0];
+    setYearsOfExperience(years);
+    
+    // Guardar en el store global
+    setDifficultyLevel(selectedDifficulty, years);
   };
 
   const getCurrentOption = () => {

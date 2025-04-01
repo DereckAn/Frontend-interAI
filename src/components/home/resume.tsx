@@ -3,12 +3,16 @@
 import { useState, useRef, useCallback } from 'react';
 import { FileUp, Check, X, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useFormDataStore } from '@/store/formDataStore';
 
 export const ResumeUpload = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Agregar el store para guardar el archivo
+  const setResumeFile = useFormDataStore(state => state.setResumeFile);
 
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -43,17 +47,19 @@ export const ResumeUpload = () => {
     const droppedFile = e.dataTransfer.files[0];
     if (droppedFile && validateFile(droppedFile)) {
       setFile(droppedFile);
+      setResumeFile(droppedFile); // Guardar en el store global
       setUploadStatus('success');
     } else {
       setUploadStatus('error');
       setTimeout(() => setUploadStatus('idle'), 3000);
     }
-  }, []);
+  }, [setResumeFile]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile && validateFile(selectedFile)) {
       setFile(selectedFile);
+      setResumeFile(selectedFile); // Guardar en el store global
       setUploadStatus('success');
     } else if (selectedFile) {
       setUploadStatus('error');
@@ -67,6 +73,7 @@ export const ResumeUpload = () => {
 
   const removeFile = () => {
     setFile(null);
+    setResumeFile(null); // Limpiar en el store global
     setUploadStatus('idle');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';

@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react';
 import { Briefcase, Copy, Check, X, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useFormDataStore } from '@/store/formDataStore';
 
 export const JobDescription = () => {
   const [description, setDescription] = useState<string>('');
@@ -10,9 +11,14 @@ export const JobDescription = () => {
   const [isCopied, setIsCopied] = useState(false);
   const [isCleared, setIsCleared] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  
+  // Agregar el store para guardar la descripción
+  const setJobDescription = useFormDataStore(state => state.setJobDescription);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(e.target.value);
+    const newValue = e.target.value;
+    setDescription(newValue);
+    setJobDescription(newValue); // Guardar en el store global
   };
 
   const handleCopy = () => {
@@ -25,6 +31,7 @@ export const JobDescription = () => {
 
   const handleClear = () => {
     setDescription('');
+    setJobDescription(''); // Limpiar en el store global
     setIsCleared(true);
     setTimeout(() => setIsCleared(false), 2000);
     if (textareaRef.current) {

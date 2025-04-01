@@ -5,3 +5,12 @@ interface Topic {
   createdAt: string;
   updatedAt: string;
 }
+
+interface Language {
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+type DifficultyLevel = "Junior" | "Mid-Level" | "Senior";

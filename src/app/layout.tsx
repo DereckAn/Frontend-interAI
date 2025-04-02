@@ -32,10 +32,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${teachers.className} ${bodoniModa.variable} antialiased max-w-[1690px]`}
+        className={`${teachers.className} ${bodoniModa.variable} antialiased max-w-[1690px] items-center content-center mx-auto`}
       >
         <Header />
-        <main className="pt-24 px-5">{children}</main>
+        <main className="pt-24">{children}</main>
       </body>
     </html>
   );

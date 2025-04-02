@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Brain, Menu, X } from "lucide-react";
 import Link from "next/link";
@@ -23,7 +23,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="fixed top-5 text-background left-5 right-5 z-50 bg-gray2/50 backdrop-blur-sm shadow-sm px-4 py-2 sm:px-6 lg:px-8 rounded-xl mx-auto flex justify-between items-center lg:max-h-[48px]">
+    <header className="fixed top-5 text-background left-5 right-5 z-50 bg-gray2/50 backdrop-blur-sm shadow-sm px-4 py-2 sm:px-6 lg:px-8 rounded-xl mx-auto flex justify-between items-center lg:max-h-[48px] max-w-[1690px]">
       <div className="flex items-center justify-start gap-3">
         <Brain className="w-5 h-5" />
         <h1
@@ -49,7 +49,7 @@ export const Header = () => {
       </ul>
 
       {/* Mobile Menu Button */}
-      <button 
+      <button
         className="md:hidden p-2 rounded-md hover:bg-gray2/10"
         onClick={toggleMenu}
         aria-label="Toggle menu"

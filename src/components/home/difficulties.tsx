@@ -6,15 +6,6 @@ import { Slider } from '@/components/ui/slider';
 import { Sparkles, Zap, Trophy } from 'lucide-react';
 import { useFormDataStore } from '@/store/formDataStore';
 
-
-interface DifficultyOption {
-  value: DifficultyLevel;
-  label: string;
-  icon: React.ReactNode;
-  description: string;
-  yearsRange: [number, number];
-}
-
 export const DifficultySelector = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel>('Mid-Level');
   const [yearsOfExperience, setYearsOfExperience] = useState<number>(3);

@@ -1,15 +1,17 @@
 "use client";
 
 import { topicIcons } from "@/lib/constants";
-import { useTopicStore } from "@/store/topicStore";
+import { useFormDataStore } from "@/store/formDataStore";
 import { Check } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import cerdo from "../../../public/images/cerdo.webp";
 
 export const TopiCards = () => {
-  const { selectedTopic, selectTopic } = useTopicStore();
+  const [topicSelected, setTopicSelected] = useState<string>("");
   const [topics, setTopics] = useState<Topic[]>([]);
+
+  const setSelectedTopic = useFormDataStore((state) => state.setSelectedTopic);
 
   // Función para obtener los topics desde el backend
   useEffect(() => {
@@ -22,10 +24,11 @@ export const TopiCards = () => {
   }, []);
 
   const handleTopicSelect = (topicValue: string) => {
-    if (selectedTopic === topicValue) {
+    if (topicSelected === topicValue) {
       return;
     }
-    selectTopic(topicValue);
+    setTopicSelected(topicValue);
+    setSelectedTopic(topicValue);
   };
 
   return (
@@ -43,7 +46,7 @@ export const TopiCards = () => {
           const Icon =
             topicIcons[iconKey as keyof typeof topicIcons] ||
             topicIcons["fullstack"]; // Default icon if no match found
-          const isSelected = selectedTopic === topic.name;
+          const isSelected = topicSelected === topic.name;
 
           return (
             <div

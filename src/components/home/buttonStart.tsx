@@ -27,8 +27,20 @@ export const ButtonStart = () => {
     
     try {
       // Validar que se hayan completado los campos requeridos
-      if (!jobDescription) {
-        alert("Please add a job description");
+      if (!difficultyLevel) {
+        alert("Please add a difficulty level");
+        setIsLoading(false);
+        return;
+      }
+
+      if (!programmingLanguage) {
+        alert("Please add a programming language");
+        setIsLoading(false);
+        return;
+      }
+
+      if (!selectedTopic) {
+        alert("Please add a topic");
         setIsLoading(false);
         return;
       }

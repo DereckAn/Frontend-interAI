@@ -13,4 +13,12 @@ interface Language {
   updatedAt: string;
 }
 
+interface DifficultyOption {
+  value: DifficultyLevel;
+  label: string;
+  icon: React.ReactNode;
+  description: string;
+  yearsRange: [number, number];
+}
+
 type DifficultyLevel = "Junior" | "Mid-Level" | "Senior";

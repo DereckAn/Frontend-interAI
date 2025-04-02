@@ -1,3 +1,4 @@
+import { Imprimir } from "@/actions/imprimir";
 import { create } from "zustand";
 
 interface FormDataState {
@@ -33,7 +34,7 @@ interface FormDataState {
 const initialState = {
   resumeFile: null,
   jobDescription: "",
-  difficultyLevel: "intermediate" as DifficultyLevel,
+  difficultyLevel: "Mid-Level" as DifficultyLevel,
   yearsOfExperience: 3,
   programmingLanguage: null,
   selectedTopic: null,
@@ -65,8 +66,10 @@ export const useFormDataStore = create<FormDataState>((set, get) => ({
     set({ isSubmitting: true });
 
     try {
+      // Prepare form data for API cal
       const formData = new FormData();
       const state = get();
+      Imprimir(state);
 
       // Add resume file if exists
       if (state.resumeFile) {
@@ -81,6 +84,8 @@ export const useFormDataStore = create<FormDataState>((set, get) => ({
         programmingLanguage: state.programmingLanguage,
         selectedTopic: state.selectedTopic,
       };
+      console.log("Form data:", formData);
+    //   Imprimir(jsonData);
 
       formData.append("data", JSON.stringify(jsonData));
 

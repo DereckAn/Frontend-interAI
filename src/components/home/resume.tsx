@@ -1,18 +1,20 @@
-'use client';
+"use client";
 
-import { useState, useRef, useCallback } from 'react';
-import { FileUp, Check, X, FileText } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useFormDataStore } from '@/store/formDataStore';
+import { useFormDataStore } from "@/store/formDataStore";
+import { AnimatePresence, motion } from "framer-motion";
+import { Check, FileText, FileUp, X } from "lucide-react";
+import { useCallback, useRef, useState } from "react";
 
 export const ResumeUpload = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [uploadStatus, setUploadStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   // Agregar el store para guardar el archivo
-  const setResumeFile = useFormDataStore(state => state.setResumeFile);
+  const setResumeFile = useFormDataStore((state) => state.setResumeFile);
 
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -26,44 +28,54 @@ export const ResumeUpload = () => {
     setIsDragging(false);
   }, []);
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!isDragging) {
-      setIsDragging(true);
-    }
-  }, [isDragging]);
+  const handleDragOver = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!isDragging) {
+        setIsDragging(true);
+      }
+    },
+    [isDragging]
+  );
 
   const validateFile = (file: File): boolean => {
-    const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    const validTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
     return validTypes.includes(file.type);
   };
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-    
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile && validateFile(droppedFile)) {
-      setFile(droppedFile);
-      setResumeFile(droppedFile); // Guardar en el store global
-      setUploadStatus('success');
-    } else {
-      setUploadStatus('error');
-      setTimeout(() => setUploadStatus('idle'), 3000);
-    }
-  }, [setResumeFile]);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragging(false);
+
+      const droppedFile = e.dataTransfer.files[0];
+      if (droppedFile && validateFile(droppedFile)) {
+        setFile(droppedFile);
+        setResumeFile(droppedFile); // Guardar en el store global
+        setUploadStatus("success");
+      } else {
+        setUploadStatus("error");
+        setTimeout(() => setUploadStatus("idle"), 3000);
+      }
+    },
+    [setResumeFile]
+  );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile && validateFile(selectedFile)) {
       setFile(selectedFile);
       setResumeFile(selectedFile); // Guardar en el store global
-      setUploadStatus('success');
+      setUploadStatus("success");
     } else if (selectedFile) {
-      setUploadStatus('error');
-      setTimeout(() => setUploadStatus('idle'), 3000);
+      setUploadStatus("error");
+      setTimeout(() => setUploadStatus("idle"), 3000);
     }
   };
 
@@ -74,21 +86,21 @@ export const ResumeUpload = () => {
   const removeFile = () => {
     setFile(null);
     setResumeFile(null); // Limpiar en el store global
-    setUploadStatus('idle');
+    setUploadStatus("idle");
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
   return (
     <section className="w-full my-8">
-      <h2 
+      <h2
         className="text-xl sm:text-2xl font-semibold mb-4"
         style={{ fontFamily: "var(--font-bodoni)" }}
       >
         Upload Your Resume
       </h2>
-      
+
       <AnimatePresence>
         {!file ? (
           <motion.div
@@ -97,11 +109,11 @@ export const ResumeUpload = () => {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
             className={`border-2 border-dashed rounded-xl p-8 text-center ${
-              isDragging 
-                ? 'border-borde bg-borde/5' 
-                : uploadStatus === 'error' 
-                  ? 'border-red-400 bg-red-50' 
-                  : 'border-gray-300 hover:border-borde/50 hover:bg-borde/5'
+              isDragging
+                ? "border-gray2/30 bg-gray2/5"
+                : uploadStatus === "error"
+                ? "border-red-400 bg-red-50"
+                : "border-gray2/20 hover:border-gray2/30 hover:bg-gray2/5"
             } transition-all duration-200 ease-in-out`}
             onDragEnter={handleDragEnter}
             onDragOver={handleDragOver}
@@ -115,38 +127,38 @@ export const ResumeUpload = () => {
               className="hidden"
               accept=".pdf,.doc,.docx"
             />
-            
-            <motion.div 
+
+            <motion.div
               className="flex flex-col items-center justify-center gap-4"
               animate={{ scale: isDragging ? 1.05 : 1 }}
               transition={{ duration: 0.2 }}
             >
               <motion.div
-                animate={{ 
+                animate={{
                   y: isDragging ? [-5, 0, -5] : 0,
                 }}
-                transition={{ 
-                  repeat: isDragging ? Infinity : 0, 
-                  duration: 1.5 
+                transition={{
+                  repeat: isDragging ? Infinity : 0,
+                  duration: 1.5,
                 }}
                 className="w-16 h-16 rounded-full bg-gray2/20 flex items-center justify-center"
               >
                 <FileUp className="w-8 h-8" />
               </motion.div>
-              
+
               <div className="space-y-2">
                 <h3 className="text-lg font-medium">
-                  {uploadStatus === 'error' 
-                    ? 'Invalid file format' 
-                    : 'Drag a file here, or'}
+                  {uploadStatus === "error"
+                    ? "Invalid file format"
+                    : "Drag a file here, or"}
                 </h3>
                 <button
                   onClick={handleButtonClick}
-                  className=" underline hover:text-borde/80 font-medium"
+                  className="underline hover:text-gray2/80 font-medium"
                 >
                   Choose a file to upload
                 </button>
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-sm text-gray2/70 mt-2">
                   Supported formats: PDF, DOC, DOCX
                 </p>
               </div>
@@ -166,15 +178,15 @@ export const ResumeUpload = () => {
                   <FileText className="w-6 h-6 text-gray2" />
                 </div>
                 <div>
-                  <h3 className="font-medium text-gray-800 truncate max-w-xs sm:max-w-sm">
+                  <h3 className="font-medium text-gray2/90 truncate max-w-xs sm:max-w-sm">
                     {file.name}
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray2/70">
                     {(file.size / 1024 / 1024).toFixed(2)} MB
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -187,11 +199,11 @@ export const ResumeUpload = () => {
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{ 
-                    type: "spring", 
-                    stiffness: 260, 
+                  transition={{
+                    type: "spring",
+                    stiffness: 260,
                     damping: 20,
-                    delay: 0.2 
+                    delay: 0.2,
                   }}
                   className="w-10 h-10 rounded-full bg-gray2/20 flex items-center justify-center"
                 >

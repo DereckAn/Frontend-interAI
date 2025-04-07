@@ -1,4 +1,4 @@
-import { Imprimir } from "@/actions/imprimir";
+import { Imprimir } from "@/src/actions/imprimir";
 import { create } from "zustand";
 
 interface FormDataState {

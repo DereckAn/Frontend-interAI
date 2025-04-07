@@ -1,4 +1,4 @@
-import { Header } from "@/components/ui/shared/Header";
+import { Header } from "@/src/components/ui/shared/Header";
 import type { Metadata } from "next";
 import { Bodoni_Moda, Teachers } from "next/font/google";
 import "./globals.css";
@@ -35,7 +35,7 @@ export default function RootLayout({
         className={`${teachers.className} ${bodoniModa.variable} antialiased max-w-[1690px] items-center content-center mx-auto`}
       >
         <Header />
-        <main className="pt-24">{children}</main>
+        <main className="pt-24 px-5 sm:px-0">{children}</main>
       </body>
     </html>
   );

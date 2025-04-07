@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormDataStore } from "@/store/formDataStore";
+import { useFormDataStore } from "@/src/store/formDataStore";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, FileText, FileUp, X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";

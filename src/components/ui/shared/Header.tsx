@@ -24,7 +24,7 @@ export const Header = () => {
 
   return (
     <header className="fixed top-5 text-background left-5 right-5 z-50 bg-gray2/50 backdrop-blur-sm shadow-sm px-4 py-2 sm:px-6 lg:px-8 rounded-xl mx-auto flex justify-between items-center lg:max-h-[48px] max-w-[1690px]">
-      <div className="flex items-center justify-start gap-3">
+      <Link href={"/"} className="flex items-center justify-start gap-3">
         <Brain className="w-5 h-5" />
         <h1
           className="text-xl font-bold"
@@ -32,7 +32,7 @@ export const Header = () => {
         >
           Interview Simulator
         </h1>
-      </div>
+      </Link>
 
       {/* Desktop Navigation */}
       <ul className="hidden md:flex items-center justify-center divide-x divide-gray2/20">

@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, Brain, User } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { ScrollArea } from '@/src/components/ui/scroll-area';
 
 interface Message {
   id: string;

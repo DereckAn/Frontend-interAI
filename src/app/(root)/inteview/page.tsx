@@ -1,11 +1,11 @@
 'use client';
 
+import { AIInterviewer } from '@/src/components/interview/AIInterviewer';
+import { CodingExercise } from '@/src/components/interview/CodingExercise';
+import { ConversationTranscript } from '@/src/components/interview/ConversationTranscript';
+import { ResizablePanel } from '@/src/components/interview/ResizablePanel';
+import { UserCamera } from '@/src/components/interview/UserCamera';
 import { useState } from 'react';
-import { ResizablePanel } from '@/components/interview/ResizablePanel';
-import { AIInterviewer } from '@/components/interview/AIInterviewer';
-import { UserCamera } from '@/components/interview/UserCamera';
-import { ConversationTranscript } from '@/components/interview/ConversationTranscript';
-import { CodingExercise } from '@/components/interview/CodingExercise';
 
 export default function InterviewPage() {
   const [isListening, setIsListening] = useState(false);

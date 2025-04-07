@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Slider } from '@/components/ui/slider';
+import { Slider } from '@/src/components/ui/slider';
 import { Sparkles, Zap, Trophy } from 'lucide-react';
-import { useFormDataStore } from '@/store/formDataStore';
+import { useFormDataStore } from '@/src/store/formDataStore';
 
 export const DifficultySelector = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel>('Mid-Level');

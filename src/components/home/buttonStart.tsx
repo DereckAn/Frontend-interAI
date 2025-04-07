@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
-import { useFormDataStore } from "@/store/formDataStore";
+import { useFormDataStore } from "@/src/store/formDataStore";
 import { useState } from "react";
 
 export const ButtonStart = () => {

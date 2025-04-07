@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Code, Search, X, Check } from 'lucide-react';
-import { useFormDataStore } from '@/store/formDataStore';
+import { useFormDataStore } from '@/src/store/formDataStore';
 
 // Definir la interfaz para los lenguajes que vienen del API
 interface Language {
@@ -178,7 +178,7 @@ export const LanguageSelectorClient = ({ languages }: LanguageSelectorClientProp
         </div>
       )}
       
-      {selectedLanguage && (
+      
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -189,7 +189,7 @@ export const LanguageSelectorClient = ({ languages }: LanguageSelectorClientProp
             <span className="font-medium">Selected language:</span> {enhancedLanguages.find(l => l.id === selectedLanguage)?.name}
           </p>
         </motion.div>
-      )}
+      
     </motion.div>
   );
 };

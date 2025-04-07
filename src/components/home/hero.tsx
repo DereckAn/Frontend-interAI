@@ -21,11 +21,10 @@ import {
   Star,
 } from "lucide-react";
 
-import { Transcript } from "@/components/Transcript";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { DifficultyLevels, InterviewTopics } from "@/lib/constants";
+import { Button } from "@/src/components/ui/button";
+import { Card } from "@/src/components/ui/card";
+import { ScrollArea } from "@/src/components/ui/scroll-area";
+import { DifficultyLevels, InterviewTopics } from "@/src/lib/constants";
 import { useReducer } from "react";
 
 const topicIcons = {
@@ -229,9 +228,9 @@ const ActiveInterview = ({
       </div>
     </Card>
 
-    <ScrollArea className="h-[600px] rounded-lg border">
+    {/* <ScrollArea className="h-[600px] rounded-lg border">
       <Transcript isListening={state.isListening} />
-    </ScrollArea>
+    </ScrollArea> */}
   </div>
 );
 

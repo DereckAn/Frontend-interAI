@@ -1,9 +1,9 @@
-import { ButtonStart } from "@/components/home/buttonStart";
-import { DifficultySelector } from "@/components/home/difficulties";
-import { JobDescription } from "@/components/home/jobDescription";
-import { LanguageSelector } from "@/components/home/languages";
-import { ResumeUpload } from "@/components/home/resume";
-import { TopiCards } from "@/components/home/topics";
+import { ButtonStart } from "@/src/components/home/buttonStart";
+import { DifficultySelector } from "@/src/components/home/difficulties";
+import { JobDescription } from "@/src/components/home/jobDescription";
+import { LanguageSelector } from "@/src/components/home/languages";
+import { ResumeUpload } from "@/src/components/home/resume";
+import { TopiCards } from "@/src/components/home/topics";
 
 export default function Home() {
   return (

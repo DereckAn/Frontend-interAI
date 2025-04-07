@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { Briefcase, Copy, Check, X, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useFormDataStore } from '@/store/formDataStore';
+import { useFormDataStore } from '@/src/store/formDataStore';
 
 export const JobDescription = () => {
   const [description, setDescription] = useState<string>('');

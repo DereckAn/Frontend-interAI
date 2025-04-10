@@ -10,6 +10,10 @@ const links = [
     label: "History",
   },
   {
+    href: "/login",
+    label: "Login",
+  },
+  {
     href: "/settings",
     label: "Settings",
   },

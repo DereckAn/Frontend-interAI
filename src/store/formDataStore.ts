@@ -1,5 +1,6 @@
 import { Imprimir } from "@/src/actions/imprimir";
 import { create } from "zustand";
+import { setInfo } from "../actions/sentInfo";
 
 interface FormDataState {
   // Resume data
@@ -69,7 +70,7 @@ export const useFormDataStore = create<FormDataState>((set, get) => ({
       // Prepare form data for API cal
       const formData = new FormData();
       const state = get();
-      Imprimir(state);
+    //   Imprimir(state);
 
       // Add resume file if exists
       if (state.resumeFile) {
@@ -85,7 +86,8 @@ export const useFormDataStore = create<FormDataState>((set, get) => ({
         selectedTopic: state.selectedTopic,
       };
       console.log("Form data:", formData);
-    //   Imprimir(jsonData);
+      Imprimir(jsonData);
+      setInfo("data sent")
 
       formData.append("data", JSON.stringify(jsonData));
 

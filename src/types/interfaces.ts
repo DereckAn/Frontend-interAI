@@ -21,4 +21,32 @@ interface DifficultyOption {
   yearsRange: [number, number];
 }
 
+interface InterviewDto {
+  id: string;
+  resume: string;
+  jobDescription: string;
+}
+
+// New interfaces for the Java DTO
+interface LanguageDto {
+  id: string; // UUID in TypeScript is represented as string
+  name: string;
+}
+
+interface UserDto {
+  id: string;
+  // Add other user properties as needed
+}
+
+interface CompleteInterviewDto {
+  id: string; // UUID in TypeScript is represented as string
+  language: LanguageDto;
+  startTime: string; // Instant in TypeScript is represented as string (ISO format)
+  endTime: string;
+  videoUrl: string;
+  audioUrl: string;
+  status: string;
+  user: UserDto;
+}
+
 type DifficultyLevel = "Junior" | "Mid-Level" | "Senior";

@@ -1,17 +1,15 @@
 "use client";
 
 import { Brain, Menu, X } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
-const links = [
+// Enlaces para usuarios autenticados
+const authenticatedLinks = [
   {
     href: "/historial",
     label: "History",
-  },
-  {
-    href: "/login",
-    label: "Login",
   },
   {
     href: "/settings",
@@ -19,8 +17,21 @@ const links = [
   },
 ];
 
+// Enlaces para usuarios no autenticados
+const unauthenticatedLinks = [
+  {
+    href: "/authentication",
+    label: "Login",
+  },
+];
+
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { status } = useSession();
+
+  // Determinar qué enlaces mostrar basado en el estado de autenticación
+  const links =
+    status === "authenticated" ? authenticatedLinks : unauthenticatedLinks;
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -50,6 +61,16 @@ export const Header = () => {
             </Link>
           </li>
         ))}
+        {status === "authenticated" && (
+          <li>
+            <Link
+              href="/api/auth/signout"
+              className="flex items-center justify-center px-4 py-2 transition-colors duration-200 hover:bg-gray2/10 rounded-md text-red-500"
+            >
+              Logout
+            </Link>
+          </li>
+        )}
       </ul>
 
       {/* Mobile Menu Button */}
@@ -76,6 +97,17 @@ export const Header = () => {
                 </Link>
               </li>
             ))}
+            {status === "authenticated" && (
+              <li className="w-full">
+                <Link
+                  href="/api/auth/signout"
+                  className="flex items-center justify-center px-4 py-3 transition-colors duration-200 hover:bg-borde/20 text-red-500"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Logout
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       )}

@@ -1,6 +1,7 @@
 import { Header } from "@/src/components/ui/shared/Header";
 import type { Metadata } from "next";
 import { Bodoni_Moda, Teachers } from "next/font/google";
+import { Providers } from "../components/ui/shared/providers";
 import "./globals.css";
 
 // Primary font - Teachers (using Inter as fallback if Teachers isn't available)
@@ -34,8 +35,10 @@ export default function RootLayout({
       <body
         className={`${teachers.className} ${bodoniModa.variable} antialiased max-w-[1690px] items-center content-center mx-auto`}
       >
-        <Header />
-        <main className="pt-24 px-5 sm:px-0">{children}</main>
+        <Providers>
+          <Header />
+          <main className="pt-24 px-5 sm:px-0">{children}</main>
+        </Providers>
       </body>
     </html>
   );

@@ -1,9 +1,12 @@
-'use client';
+"use client";
 
+import { signIn } from "next-auth/react"; // Use this import for client-side
 import { loginFormSchema } from "@/src/schema";
-import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import {
@@ -14,19 +17,11 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { useRouter } from "next/navigation";
-import { signIn } from "@/auth";
-import { useState } from "react";
 
 interface FormData extends z.infer<typeof loginFormSchema> {}
 
-export const LoginCard = ({
-    onToggleView,
-  }: {
-    onToggleView: () => void;
-  }) => {
+export const LoginCard = ({ onToggleView }: { onToggleView: () => void }) => {
   const router = useRouter();
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     register,
@@ -43,23 +38,29 @@ export const LoginCard = ({
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      setErrorMessage(null);
+      toast.loading("Signing in...");
+
       const result = await signIn("credentials", {
         redirect: false,
         email: data.email,
         password: data.password,
+        callbackUrl: "/settings",
       });
 
       if (result?.error) {
-        setErrorMessage("Invalid email or password");
+        toast.dismiss();
+        toast.error("Invalid email or password");
         return;
       }
 
-      // Redirect to the default redirect path (handled by middleware)
+      toast.dismiss();
+      toast.success("Signed in successfully");
       router.push("/settings");
       reset();
     } catch (error) {
-      setErrorMessage("An error occurred. Please try again.");
+      console.error("Login error:", error);
+      toast.dismiss();
+      toast.error("An error occurred. Please try again.");
     }
   };
 
@@ -141,7 +142,10 @@ export const LoginCard = ({
         </div>
         <p className="text-center text-sm text-muted-foreground">
           Don't have an account?{" "}
-          <button  onClick={onToggleView}  className="text-primary hover:underline">
+          <button
+            onClick={onToggleView}
+            className="text-primary hover:underline"
+          >
             Sign up
           </button>
         </p>

@@ -13,7 +13,7 @@ import { registerFormSchema } from "@/src/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useState } from "react";
+import { toast } from "sonner";
 import { z } from "zod";
 
 interface FormData extends z.infer<typeof registerFormSchema> {}
@@ -24,12 +24,12 @@ export const RegisterCard = ({
   onToggleView: () => void;
 }) => {
   const router = useRouter();
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -41,33 +41,43 @@ export const RegisterCard = ({
     },
   });
 
-  const onSubmit:SubmitHandler<FormData> = async (data) => {
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      setErrorMessage(null);
-      const response = await fetch(process.env.NEXT_PUBLIC_API_URL + " api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          username: data.username,
-          password: data.password,
-          confirmPassword: data.confirmPassword,
-        }),
-      });
+      toast.loading("Creating your account...");
+
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + "api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            username: data.username,
+            password: data.password,
+            confirmPassword: data.confirmPassword,
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
-        setErrorMessage(errorData.message || "Registration failed");
+        toast.dismiss();
+        toast.error(errorData.message || "Registration failed");
         return;
       }
 
-      // Redirect to login page after successful registration
-      router.push("/login");
+      toast.dismiss();
+      toast.success("Account created successfully! Please log in.");
+      reset();
+
+      // Switch to login view after successful registration
+      onToggleView();
     } catch (error) {
-      setErrorMessage("An error occurred. Please try again.");
+      toast.dismiss();
+      toast.error("An error occurred. Please try again.");
     }
   };
 
@@ -82,9 +92,6 @@ export const RegisterCard = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {errorMessage && (
-          <p className="text-sm text-red-500 mb-4">{errorMessage}</p>
-        )}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <label

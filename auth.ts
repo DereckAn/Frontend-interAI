@@ -39,64 +39,79 @@ export const authConfig = {
        * @returns {Promise<User | null>} - Devuelve el usuario si la autenticación es exitosa, de lo contrario null.
        */
       async authorize(credentials): Promise<User | null> {
-        // Validar credenciales
         if (!credentials?.email || !credentials?.password) {
-          return null;
+            return null;
         }
-
-        // Afirmaciones de tipo para las credenciales
+    
         const email = credentials.email as string;
         const password = credentials.password as string;
-
+    
+        console.log("Email:", email);
+        console.log("Password:", password);
+    
         try {
-          const response = await fetch(
-            process.env.NEXT_PUBLIC_API_URL + "api/auth/login",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                email,
-                password,
-              }),
-              credentials: "include",
+            const response = await fetch(
+                process.env.NEXT_PUBLIC_API_URL + "api/auth/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                    }),
+                    credentials: "include",
+                }
+            );
+    
+            console.log("Login response status:", response.status);
+            console.log("Login response ok:", response.ok);
+    
+            if (!response.ok) {
+                console.log("Login response body:", await response.text());
+                return null;
             }
-          );
-
-          if (!response.ok) {
-            return null;
-          }
-
-          const data = (await response.json()) as QuarkusLoginResponse;
-
-          // Asegúrate de que los datos coincidan con la interfaz User
-          if (!data.userId || typeof data.userId !== "string") {
-            return null;
-          }
-
-          return {
-            id: data.userId,
-            email,
-          } satisfies User;
+    
+            const data = (await response.json()) as QuarkusLoginResponse;
+            console.log("Login response data:", data);
+    
+            if (!data.userId || typeof data.userId !== "string") {
+                console.log("Invalid userId in response");
+                return null;
+            }
+    
+            return {
+                id: data.userId,
+                email,
+            } satisfies User;
         } catch (error) {
-          console.error("Authentication error:", error);
-          return null;
+            console.error("Authentication error:", error);
+            return null;
         }
-      },
+    }
     }),
   ],
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider !== "credentials") return true;
+      // const existingUser = await getUserById(user.id?.toString()!);
+      return true; // Always return a boolean, not the user object
+    },
     /**
      * @function jwt
      * @description Callback que se ejecuta cada vez que se crea o actualiza un JWT.
      * @param {Object} param0 - Contiene el token y el usuario.
      * @returns {Promise<Object>} - Devuelve el token modificado.
      */
-    async jwt({ token, user }) {
+    async jwt({ token, user, account, profile }) {
       if (user) {
         token.userId = user.id;
-        token.email = user.email!;
+        token.email = user.email ?? "no-email@example.com";
+      }
+      if (account && profile) {
+        token.userId = profile.sub!;
+        token.email = profile.email ?? "no-email@example.com";
       }
       return token;
     },
@@ -119,18 +134,22 @@ export const authConfig = {
           }
         );
 
-        if (response.ok) {
-          const userData = await response.json();
-          session.user = {
-            id: token.userId as string,
-            email: token.email as string,
-            name: userData.name,
-            role: userData.role,
-            emailVerified: null,
-          };
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+          //   return null;
         }
+
+        const userData = await response.json();
+        session.user = {
+          id: token.userId as string,
+          email: token.email as string,
+          name: userData.name,
+          role: userData.role,
+          emailVerified: null,
+        };
       } catch (error) {
         console.error("Failed to fetch user data:", error);
+        throw new Error("Failed to fetch user data");
       }
       return session;
     },

@@ -1,5 +1,6 @@
 "use client";
 
+import { LogoutButton } from "@/src/components/authentication/LogoutButton";
 import { Brain, Menu, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -27,7 +28,7 @@ const unauthenticatedLinks = [
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { status } = useSession();
+  const { status, data } = useSession();
 
   // Determinar qué enlaces mostrar basado en el estado de autenticación
   const links =
@@ -63,12 +64,9 @@ export const Header = () => {
         ))}
         {status === "authenticated" && (
           <li>
-            <Link
-              href="/api/auth/signout"
-              className="flex items-center justify-center px-4 py-2 transition-colors duration-200 hover:bg-gray2/10 rounded-md text-red-500"
-            >
-              Logout
-            </Link>
+            <div className="flex items-center justify-center px-4 py-2">
+              <LogoutButton />
+            </div>
           </li>
         )}
       </ul>
@@ -99,13 +97,9 @@ export const Header = () => {
             ))}
             {status === "authenticated" && (
               <li className="w-full">
-                <Link
-                  href="/api/auth/signout"
-                  className="flex items-center justify-center px-4 py-3 transition-colors duration-200 hover:bg-borde/20 text-red-500"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Logout
-                </Link>
+                <div className="flex items-center justify-center px-4 py-3">
+                  <LogoutButton />
+                </div>
               </li>
             )}
           </ul>

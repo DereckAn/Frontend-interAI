@@ -1,61 +1,136 @@
-import type { NextAuthConfig } from "next-auth";
-import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
-// import { JWT } from "next-auth/jwt"
-// import { Session } from "next-auth"
+/**
+ * @module auth
+ * @description Configuración de autenticación utilizando NextAuth.js con Google y credenciales.
+ */
 
-// Define la configuración de Auth.js
+import type { NextAuthConfig, User } from "next-auth";
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+
+// Define la respuesta esperada del endpoint de inicio de sesión de Quarkus
+interface QuarkusLoginResponse {
+  userId: string;
+  // Agrega otros campos si Quarkus devuelve más datos (por ejemplo, nombre, rol)
+}
+
+// Define la configuración para Auth.js
 export const authConfig = {
   pages: {
-    signIn: "/login",
-    //   signOut: "/auth/signout",
-    error: "/auth/error",
+    signIn: "/login", // Página de inicio de sesión
+    error: "/auth/error", // Página de error
   },
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      // ¡Importante! Asegúrate de solicitar 'openid' y 'email' scopes
-      // 'profile' es generalmente incluido por defecto.
       authorization: { params: { scope: "openid email profile" } },
     }),
-    // Puedes añadir otros proveedores aquí (GitHub, Credentials, etc.)
+    Credentials({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      /**
+       * @function authorize
+       * @description Valida las credenciales del usuario.
+       * @param {Object} credentials - Credenciales del usuario.
+       * @returns {Promise<User | null>} - Devuelve el usuario si la autenticación es exitosa, de lo contrario null.
+       */
+      async authorize(credentials): Promise<User | null> {
+        // Validar credenciales
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
+
+        // Afirmaciones de tipo para las credenciales
+        const email = credentials.email as string;
+        const password = credentials.password as string;
+
+        try {
+          const response = await fetch(
+            process.env.NEXT_PUBLIC_API_URL + "api/auth/login",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email,
+                password,
+              }),
+              credentials: "include",
+            }
+          );
+
+          if (!response.ok) {
+            return null;
+          }
+
+          const data = (await response.json()) as QuarkusLoginResponse;
+
+          // Asegúrate de que los datos coincidan con la interfaz User
+          if (!data.userId || typeof data.userId !== "string") {
+            return null;
+          }
+
+          return {
+            id: data.userId,
+            email,
+          } satisfies User;
+        } catch (error) {
+          console.error("Authentication error:", error);
+          return null;
+        }
+      },
+    }),
   ],
   callbacks: {
     /**
-     * Callback 'jwt': Se ejecuta cada vez que se crea o actualiza un JWT.
-     * Aquí es donde puedes añadir información al token que Auth.js maneja internamente
-     * y, crucialmente, el token que quieres enviar a tu backend (Quarkus).
+     * @function jwt
+     * @description Callback que se ejecuta cada vez que se crea o actualiza un JWT.
+     * @param {Object} param0 - Contiene el token y el usuario.
+     * @returns {Promise<Object>} - Devuelve el token modificado.
      */
-    async jwt({ token, account, profile }) {
-      // 'account' contiene información del proveedor (Google, etc.) solo en el primer login
-      if (account) {
-        // 'id_token' de Google es un JWT que Quarkus podría validar si está configurado como OIDC client.
-        // O podrías generar tu propio JWT aquí si usas Credentials o prefieres un token propio.
-        token.idToken = account.id_token; // Guarda el id_token de Google
-        token.accessToken = account.access_token; // Guarda el access_token si lo necesitas
-        // Añade el ID de usuario de tu base de datos al token si es necesario.
-        // Aquí usamos el 'sub' (subject) del perfil de Google como identificador único.
-        // En un escenario real, podrías buscar/crear el usuario en tu BD aquí
-        // y añadir tu propio user ID interno al token.
-        token.userId = token.sub; // Asigna el 'sub' del token JWT estándar
+    async jwt({ token, user }) {
+      if (user) {
+        token.userId = user.id;
+        token.email = user.email!;
       }
-      return token; // Devuelve el token modificado
+      return token;
     },
-
     /**
-     * Callback 'session': Se ejecuta para crear el objeto 'session' que
-     * estará disponible en el cliente (useSession) o servidor (auth()).
-     * Aquí expones la información necesaria del token JWT al resto de tu app Next.js.
+     * @function session
+     * @description Callback que se ejecuta para crear el objeto 'session' que estará disponible en el cliente o servidor.
+     * @param {Object} param0 - Contiene la sesión y el token.
+     * @returns {Promise<Object>} - Devuelve la sesión modificada.
      */
     async session({ session, token }) {
-      // Añade la información del token (que modificamos en el callback 'jwt')
-      // al objeto 'session'.
-      // ¡NO expongas secretos o información sensible aquí!
-      session.idToken = token.idToken as string; // Expone el id_token para enviarlo a Quarkus
-      session.accessToken = token.accessToken as string; // Expone el access_token si es necesario
-      if (session.user) {
-        session.user.id = token.userId as string; // Expone el userId
+      try {
+        const response = await fetch(
+          process.env.NEXT_PUBLIC_API_URL + "api/auth/me",
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.ok) {
+          const userData = await response.json();
+          session.user = {
+            id: token.userId as string,
+            email: token.email as string,
+            name: userData.name,
+            role: userData.role,
+            emailVerified: null,
+          };
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
       }
       return session;
     },
@@ -63,8 +138,7 @@ export const authConfig = {
   session: {
     strategy: "jwt", // Asegúrate de usar JWT como estrategia de sesión
   },
-  // Añade tu NEXTAUTH_SECRET aquí, es crucial para la seguridad
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET, // Clave secreta para NextAuth
 } satisfies NextAuthConfig;
 
 // Exporta los handlers GET y POST y la función auth

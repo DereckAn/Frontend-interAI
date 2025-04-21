@@ -12,14 +12,20 @@ import {
 import { registerFormSchema } from "@/src/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { z } from "zod";
+
+interface FormData extends z.infer<typeof registerFormSchema> {}
 
 export const RegisterCard = ({
   onToggleView,
 }: {
   onToggleView: () => void;
 }) => {
-//   const router = useRouter();
+  const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -35,16 +41,10 @@ export const RegisterCard = ({
     },
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit:SubmitHandler<FormData> = async (data) => {
     try {
-      // Verificar que las contraseñas coincidan
-      if (data.password !== data.confirmPassword) {
-        console.error("Passwords do not match");
-        return;
-      }
-
-      // Enviar datos al backend
-      const response = await fetch("/api/auth/register", {
+      setErrorMessage(null);
+      const response = await fetch(process.env.NEXT_PUBLIC_API_URL + " api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,20 +54,23 @@ export const RegisterCard = ({
           email: data.email,
           username: data.username,
           password: data.password,
+          confirmPassword: data.confirmPassword,
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
+        setErrorMessage(errorData.message || "Registration failed");
         return;
       }
 
-      // Redirigir a la página de login después del registro exitoso
-    //   router.push("/login");
+      // Redirect to login page after successful registration
+      router.push("/login");
     } catch (error) {
-      console.error("An error occurred. Please try again.");
+      setErrorMessage("An error occurred. Please try again.");
     }
   };
+
   return (
     <Card className="w-full max-w-md shadow-xl border-0 bg-white">
       <CardHeader className="space-y-1">
@@ -79,6 +82,9 @@ export const RegisterCard = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {errorMessage && (
+          <p className="text-sm text-red-500 mb-4">{errorMessage}</p>
+        )}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <label

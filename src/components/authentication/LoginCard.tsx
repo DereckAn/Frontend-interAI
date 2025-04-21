@@ -14,7 +14,9 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { signIn } from "@/auth";
+import { useState } from "react";
 
 interface FormData extends z.infer<typeof loginFormSchema> {}
 
@@ -23,7 +25,8 @@ export const LoginCard = ({
   }: {
     onToggleView: () => void;
   }) => {
-//   const router = useRouter();
+  const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     register,
@@ -40,21 +43,26 @@ export const LoginCard = ({
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      console.log("Sign-in data: -> ", data);
-      //   const result = await signIn("credentials", {
-      //     email: data.email,
-      //     password: data.password,
-      //     redirect: false,
-      //   });
+      setErrorMessage(null);
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+      });
 
-      //   console.log("Sign-in result: -> ", result);
+      if (result?.error) {
+        setErrorMessage("Invalid email or password");
+        return;
+      }
 
-      //   router.push("/");
+      // Redirect to the default redirect path (handled by middleware)
+      router.push("/settings");
       reset();
     } catch (error) {
-      console.error("Error during sign-in:", error);
+      setErrorMessage("An error occurred. Please try again.");
     }
   };
+
   return (
     <Card className="w-full max-w-md shadow-xl border-0 bg-white">
       <CardHeader className="space-y-1">

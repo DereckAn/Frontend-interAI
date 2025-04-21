@@ -13,7 +13,7 @@ interface Language {
 
 // Función para obtener los lenguajes (ejecutada en el servidor)
 async function getLanguages(): Promise<Language[]> {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/languages`, {
+  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "languages", {
     cache: "no-store", // o { next: { revalidate: 3600 } } para revalidar cada hora
   });
 

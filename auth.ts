@@ -11,6 +11,7 @@ import Google from "next-auth/providers/google";
 // Define la respuesta esperada del endpoint de inicio de sesión de Quarkus
 interface QuarkusLoginResponse {
   userId: string;
+  token: string;
   // Agrega otros campos si Quarkus devuelve más datos (por ejemplo, nombre, rol)
 }
 
@@ -40,56 +41,65 @@ export const authConfig = {
        */
       async authorize(credentials): Promise<User | null> {
         if (!credentials?.email || !credentials?.password) {
-            return null;
+          return null;
         }
-    
+
         const email = credentials.email as string;
         const password = credentials.password as string;
-    
+
         console.log("Email:", email);
         console.log("Password:", password);
-    
+
         try {
-            const response = await fetch(
-                process.env.NEXT_PUBLIC_API_URL + "api/auth/login",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        email,
-                        password,
-                    }),
-                    credentials: "include",
-                }
-            );
-    
-            console.log("Login response status:", response.status);
-            console.log("Login response ok:", response.ok);
-    
-            if (!response.ok) {
-                console.log("Login response body:", await response.text());
-                return null;
-            }
-    
-            const data = (await response.json()) as QuarkusLoginResponse;
-            console.log("Login response data:", data);
-    
-            if (!data.userId || typeof data.userId !== "string") {
-                console.log("Invalid userId in response");
-                return null;
-            }
-    
-            return {
-                id: data.userId,
+          const response = await fetch(
+            process.env.NEXT_PUBLIC_API_URL + "api/auth/login",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
                 email,
-            } satisfies User;
-        } catch (error) {
-            console.error("Authentication error:", error);
+                password,
+              }),
+              credentials: "include",
+            }
+          );
+
+          console.log("Login response status:", response.status);
+          console.log("Login response ok:", response.ok);
+
+          if (!response.ok) {
+            console.log("Login response body:", await response.text());
             return null;
+          }
+
+          const data = await response.json();
+          console.log("Login response data:", data);
+
+          if (!data.userId || typeof data.userId !== "string") {
+            console.log("Invalid userId in response");
+            return null;
+          }
+
+          // Store the token from the cookie or response
+          const cookies = response.headers.get("set-cookie");
+          let jwtToken = null;
+          if (cookies) {
+            const jwtMatch = cookies.match(/jwt=([^;]+)/);
+            jwtToken = jwtMatch ? jwtMatch[1] : null;
+          }
+
+          return {
+            id: data.userId,
+            email,
+            jwtToken,
+          } satisfies User;
+        } catch (error) {
+          console.error("Authentication error:", error);
+          return null;
         }
-    }
+      },
     }),
   ],
   callbacks: {
@@ -106,8 +116,9 @@ export const authConfig = {
      */
     async jwt({ token, user, account, profile }) {
       if (user) {
-        token.userId = user.id;
-        token.email = user.email ?? "no-email@example.com";
+        token.id = user.id as string;
+        token.email = user.email as string;
+        token.jwtToken = user.jwtToken;
       }
       if (account && profile) {
         token.userId = profile.sub!;
@@ -130,6 +141,7 @@ export const authConfig = {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
+              Authorization: token.jwtToken ? `Bearer ${token.jwtToken}` : "", // Include the token
             },
           }
         );
@@ -145,6 +157,7 @@ export const authConfig = {
           email: token.email as string,
           name: userData.name,
           role: userData.role,
+          jwtToken: token.jwtToken,
           emailVerified: null,
         };
       } catch (error) {

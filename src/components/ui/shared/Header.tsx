@@ -6,29 +6,52 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
+// Enlaces para usuarios no autenticados
+const unauthenticatedLinks = [
+  {
+    href: "/#pricing",
+    label: "Pricing",
+    isScrollLink: true,
+  },
+  {
+    href: "/#how-it-works",
+    label: "How It Works",
+    isScrollLink: true,
+  },
+  {
+    href: "/#features",
+    label: "Features",
+    isScrollLink: true,
+  },
+  {
+    href: "/authentication",
+    label: "Login",
+    isScrollLink: false,
+  },
+];
+
 // Enlaces para usuarios autenticados
 const authenticatedLinks = [
   {
     href: "/historial",
     label: "History",
+    isScrollLink: false,
   },
   {
     href: "/settings",
     label: "Settings",
+    isScrollLink: false,
   },
-];
-
-// Enlaces para usuarios no autenticados
-const unauthenticatedLinks = [
   {
-    href: "/authentication",
-    label: "Login",
+    href: "/interviews",
+    label: "Interviews",
+    isScrollLink: false,
   },
 ];
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { status, data } = useSession();
+  const { status } = useSession();
 
   // Determinar qué enlaces mostrar basado en el estado de autenticación
   const links =
@@ -36,6 +59,17 @@ export const Header = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const scrollToSection = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    sectionId: string
+  ) => {
+    event.preventDefault();
+    const section = document.querySelector(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -51,22 +85,30 @@ export const Header = () => {
       </Link>
 
       {/* Desktop Navigation */}
-      <ul className="hidden md:flex items-center justify-center divide-x divide-gray2/20">
+      <ul className="hidden md:flex items-center justify-center space-x-2">
         {links.map((link) => (
           <li key={link.href}>
-            <Link
-              href={link.href}
-              className="flex items-center justify-center px-4 py-2 transition-colors duration-200 hover:bg-gray2/10 rounded-md"
-            >
-              {link.label}
-            </Link>
+            {link.isScrollLink ? (
+              <a
+                href={link.href}
+                className="flex items-center justify-center px-4 py-2 transition-colors duration-200 hover:bg-gray2/10 rounded-md"
+                onClick={(e) => scrollToSection(e, link.href.substring(1))}
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link
+                href={link.href}
+                className="flex items-center justify-center px-4 py-2 transition-colors duration-200 hover:bg-gray2/10 rounded-md"
+              >
+                {link.label}
+              </Link>
+            )}
           </li>
         ))}
         {status === "authenticated" && (
           <li>
-            <div className="flex items-center justify-center px-4 py-2">
-              <LogoutButton />
-            </div>
+            <LogoutButton />
           </li>
         )}
       </ul>
@@ -86,13 +128,26 @@ export const Header = () => {
           <ul className="flex flex-col items-center">
             {links.map((link) => (
               <li key={link.href} className="w-full">
-                <Link
-                  href={link.href}
-                  className="flex items-center justify-center px-4 py-3 transition-colors duration-200 hover:bg-borde/20"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
+                {link.isScrollLink ? (
+                  <a
+                    href={link.href}
+                    className="flex items-center justify-center px-4 py-3 transition-colors duration-200 hover:bg-borde/20"
+                    onClick={(e) => {
+                      scrollToSection(e, link.href.substring(1));
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    href={link.href}
+                    className="flex items-center justify-center px-4 py-3 transition-colors duration-200 hover:bg-borde/20"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                )}
               </li>
             ))}
             {status === "authenticated" && (

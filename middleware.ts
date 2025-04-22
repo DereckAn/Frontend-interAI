@@ -33,7 +33,6 @@ export default auth((req) => {
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
-
 // Esta funcion es para que el usuario no tenga que logiearse cada 30 dias.
 // export { auth as middleware } from "@/auth";
 

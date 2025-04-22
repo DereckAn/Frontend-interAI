@@ -1,8 +1,8 @@
 "use client";
 
-import { signIn } from "next-auth/react"; // Use this import for client-side
 import { loginFormSchema } from "@/src/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react"; // Use this import for client-side
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -44,7 +44,7 @@ export const LoginCard = ({ onToggleView }: { onToggleView: () => void }) => {
         redirect: false,
         email: data.email,
         password: data.password,
-        callbackUrl: "/settings",
+        callbackUrl: "/fill_information",
       });
 
       if (result?.error) {
@@ -55,7 +55,7 @@ export const LoginCard = ({ onToggleView }: { onToggleView: () => void }) => {
 
       toast.dismiss();
       toast.success("Signed in successfully");
-      router.push("/settings");
+      router.push("/fill_information");
       reset();
     } catch (error) {
       console.error("Login error:", error);

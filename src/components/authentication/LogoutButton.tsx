@@ -9,6 +9,7 @@ export const LogoutButton = () => {
 
   const handleLogout = async () => {
     try {
+      console.log("🚪 Iniciando proceso de logout");
       toast.loading("Logging out...");
 
       // Call Quarkus logout endpoint to clear the cookie
@@ -19,6 +20,8 @@ export const LogoutButton = () => {
           credentials: "include",
         }
       );
+
+      console.log("📡 Respuesta del servidor:", response.status, response.ok);
 
       if (!response.ok) {
         throw new Error("Failed to log out from the server");

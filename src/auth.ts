@@ -8,18 +8,13 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 
-// Define la respuesta esperada del endpoint de inicio de sesión de Quarkus
-interface QuarkusLoginResponse {
-  userId: string;
-  token: string;
-  // Agrega otros campos si Quarkus devuelve más datos (por ejemplo, nombre, rol)
-}
-
-// Define la configuración para Auth.js
+/**
+ * Configuración principal de autenticación
+ */
 export const authConfig = {
   pages: {
-    signIn: "/login", // Página de inicio de sesión
-    error: "/auth/error", // Página de error
+    signIn: "/authentication",
+    error: "/authentication/error",
   },
   providers: [
     Google({
@@ -33,12 +28,6 @@ export const authConfig = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      /**
-       * @function authorize
-       * @description Valida las credenciales del usuario.
-       * @param {Object} credentials - Credenciales del usuario.
-       * @returns {Promise<User | null>} - Devuelve el usuario si la autenticación es exitosa, de lo contrario null.
-       */
       async authorize(credentials): Promise<User | null> {
         if (!credentials?.email || !credentials?.password) {
           return null;
@@ -82,13 +71,13 @@ export const authConfig = {
             return null;
           }
 
-          // Store the token from the cookie or response
           const cookies = response.headers.get("set-cookie");
           let jwtToken = null;
           if (cookies) {
             const jwtMatch = cookies.match(/jwt=([^;]+)/);
             jwtToken = jwtMatch ? jwtMatch[1] : null;
           }
+          console.log("Extracted jwtToken:", jwtToken);
 
           return {
             id: data.userId,
@@ -104,16 +93,10 @@ export const authConfig = {
   ],
   callbacks: {
     async signIn({ user, account }) {
-      if (account?.provider !== "credentials") return true;
-      // const existingUser = await getUserById(user.id?.toString()!);
-      return true; // Always return a boolean, not the user object
-    },
-    /**
-     * @function jwt
-     * @description Callback que se ejecuta cada vez que se crea o actualiza un JWT.
-     * @param {Object} param0 - Contiene el token y el usuario.
-     * @returns {Promise<Object>} - Devuelve el token modificado.
-     */
+        if (account?.provider !== "credentials") return true;
+        // Verificar si el usuario existe y tiene los datos necesarios
+        return !!user && !!user.id;
+      },
     async jwt({ token, user, account, profile }) {
       if (user) {
         token.id = user.id as string;
@@ -121,19 +104,15 @@ export const authConfig = {
         token.jwtToken = user.jwtToken;
       }
       if (account && profile) {
-        token.userId = profile.sub!;
+        token.id = profile.sub!;
         token.email = profile.email ?? "no-email@example.com";
       }
+      console.log("JWT token:", token);
       return token;
     },
-    /**
-     * @function session
-     * @description Callback que se ejecuta para crear el objeto 'session' que estará disponible en el cliente o servidor.
-     * @param {Object} param0 - Contiene la sesión y el token.
-     * @returns {Promise<Object>} - Devuelve la sesión modificada.
-     */
     async session({ session, token }) {
       try {
+        console.log("Fetching /me with jwtToken:", token.jwtToken);
         const response = await fetch(
           process.env.NEXT_PUBLIC_API_URL + "api/auth/me",
           {
@@ -141,19 +120,24 @@ export const authConfig = {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              Authorization: token.jwtToken ? `Bearer ${token.jwtToken}` : "", // Include the token
+              Authorization: token.jwtToken ? `Bearer ${token.jwtToken}` : "",
             },
           }
         );
 
+        console.log("Response status:", response.status);
         if (!response.ok) {
-          throw new Error("Failed to fetch user data");
-          //   return null;
+          const errorBody = await response.text();
+          console.error("Error response body:", errorBody);
+          throw new Error(
+            `Failed to fetch user data: ${response.status} ${errorBody}`
+          );
         }
 
         const userData = await response.json();
+        console.log("User data:", userData);
         session.user = {
-          id: token.userId as string,
+          id: token.id as string,
           email: token.email as string,
           name: userData.name,
           role: userData.role,
@@ -162,16 +146,15 @@ export const authConfig = {
         };
       } catch (error) {
         console.error("Failed to fetch user data:", error);
-        throw new Error("Failed to fetch user data");
+        throw error; // Let Auth.js handle the error
       }
       return session;
     },
   },
   session: {
-    strategy: "jwt", // Asegúrate de usar JWT como estrategia de sesión
+    strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET, // Clave secreta para NextAuth
+  secret: process.env.NEXTAUTH_SECRET,
 } satisfies NextAuthConfig;
 
-// Exporta los handlers GET y POST y la función auth
 export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);

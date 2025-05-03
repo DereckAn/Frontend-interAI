@@ -1,10 +1,10 @@
-import { auth } from "@/auth";
+import { auth } from "./auth";
 import {
   apiAuthPrefix,
   authRoutes,
   DEFAULT_LOGIN_REDIRECT,
   publicRoutes,
-} from "@/routes";
+} from "./routes";
 
 export default auth((req) => {
   const { nextUrl } = req;
@@ -26,14 +26,10 @@ export default auth((req) => {
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL("/authentication", nextUrl));
+    return Response.redirect(new URL("/", nextUrl));
   }
 });
 
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
-// Esta funcion es para que el usuario no tenga que logiearse cada 30 dias.
-// export { auth as middleware } from "@/auth";
-
-//note: Segun los Docs de Next Auth V5. Ya no es necesarion un middleware. Ya se hace desde el auth.ts

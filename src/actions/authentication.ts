@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "@/auth";
+import { signIn } from "@/src/auth";
 import { AuthError } from "next-auth";
 import { z } from "zod";
 import { loginFormSchema } from "../schema";

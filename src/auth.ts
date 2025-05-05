@@ -6,8 +6,8 @@
 import type { NextAuthConfig, User } from "next-auth";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 
 /**
  * Configuración principal de autenticación
@@ -42,8 +42,8 @@ export const authConfig = {
         const email = credentials.email as string;
         const password = credentials.password as string;
 
-        console.log("Email:", email);
-        console.log("Password:", password);
+        // console.log("Email:", email);
+        // console.log("Password:", password);
 
         try {
           const response = await fetch(
@@ -61,19 +61,19 @@ export const authConfig = {
             }
           );
 
-          console.log("Login response status:", response.status);
-          console.log("Login response ok:", response.ok);
+          //   console.log("Login response status:", response.status);
+          //   console.log("Login response ok:", response.ok);
 
           if (!response.ok) {
-            console.log("Login response body:", await response.text());
+            // console.log("Login response body:", await response.text());
             return null;
           }
 
           const data = await response.json();
-          console.log("Login response data:", data);
+        //   console.log("Login response data:", data);
 
           if (!data.userId || typeof data.userId !== "string") {
-            console.log("Invalid userId in response");
+            // console.log("Invalid userId in response");
             return null;
           }
 
@@ -83,7 +83,7 @@ export const authConfig = {
             const jwtMatch = cookies.match(/jwt=([^;]+)/);
             jwtToken = jwtMatch ? jwtMatch[1] : null;
           }
-          console.log("Extracted jwtToken:", jwtToken);
+          //   console.log("Extracted jwtToken:", jwtToken);
 
           return {
             id: data.userId,
@@ -99,10 +99,10 @@ export const authConfig = {
   ],
   callbacks: {
     async signIn({ user, account }) {
-        if (account?.provider !== "credentials") return true;
-        // Verificar si el usuario existe y tiene los datos necesarios
-        return !!user && !!user.id;
-      },
+      if (account?.provider !== "credentials") return true;
+      // Verificar si el usuario existe y tiene los datos necesarios
+      return !!user && !!user.id;
+    },
     async jwt({ token, user, account, profile }) {
       if (user) {
         token.id = user.id as string;
@@ -113,12 +113,12 @@ export const authConfig = {
         token.id = profile.sub!;
         token.email = profile.email ?? "no-email@example.com";
       }
-      console.log("JWT token:", token);
+      //   console.log("JWT token:", token);
       return token;
     },
     async session({ session, token }) {
       try {
-        console.log("Fetching /me with jwtToken:", token.jwtToken);
+        // console.log("Fetching /me with jwtToken:", token.jwtToken);
         const response = await fetch(
           process.env.NEXT_PUBLIC_API_URL + "api/auth/me",
           {
@@ -131,7 +131,7 @@ export const authConfig = {
           }
         );
 
-        console.log("Response status:", response.status);
+        // console.log("Response status:", response.status);
         if (!response.ok) {
           const errorBody = await response.text();
           console.error("Error response body:", errorBody);
@@ -141,7 +141,7 @@ export const authConfig = {
         }
 
         const userData = await response.json();
-        console.log("User data:", userData);
+        // console.log("User data:", userData);
         session.user = {
           id: token.id as string,
           email: token.email as string,

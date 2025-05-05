@@ -8,49 +8,90 @@ import {
   CardHeader,
   CardTitle,
 } from "@/src/components/ui/card";
-import { Moon, Sun } from "lucide-react";
+import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export function AppearanceTab() {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    console.log("Current theme:", theme); // Depuración
+  }, [theme]);
+
+  const handleThemeChange = (newTheme: string) => {
+    setTheme(newTheme);
+    const themeNames = {
+      light: "claro",
+      dark: "oscuro",
+      system: "del sistema",
+    };
+    toast.success(
+      `Tema ${
+        themeNames[newTheme as keyof typeof themeNames]
+      } aplicado correctamente`
+    );
+  };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Appearance</CardTitle>
+        <CardTitle>Apariencia</CardTitle>
         <CardDescription>
-          Customize the appearance of the application
+          Personaliza la apariencia de la aplicación
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-medium mb-4">Theme</h3>
+            <h3 className="text-lg font-medium mb-4">Tema</h3>
             <div className="flex flex-wrap gap-4">
               <Button
                 variant={theme === "light" ? "default" : "outline"}
                 className="flex items-center gap-2"
-                onClick={() => setTheme("light")}
+                onClick={() => handleThemeChange("light")}
               >
                 <Sun className="h-4 w-4" />
-                Light
+                Claro
               </Button>
               <Button
                 variant={theme === "dark" ? "default" : "outline"}
                 className="flex items-center gap-2"
-                onClick={() => setTheme("dark")}
+                onClick={() => handleThemeChange("dark")}
               >
                 <Moon className="h-4 w-4" />
-                Dark
+                Oscuro
               </Button>
               <Button
                 variant={theme === "system" ? "default" : "outline"}
                 className="flex items-center gap-2"
-                onClick={() => setTheme("system")}
+                onClick={() => handleThemeChange("system")}
               >
-                System
+                <Monitor className="h-4 w-4" />
+                Sistema
               </Button>
             </div>
+            <p className="mt-4 text-sm text-muted-foreground">
+              Tu preferencia de tema se guardará automáticamente para futuras
+              visitas.
+            </p>
+          </div>
+          {/* Elemento de depuración */}
+          <div
+            className="mt-4 p-4"
+            style={{
+              backgroundColor: "var(--background)",
+              color: "var(--foreground)",
+            }}
+          >
+            Prueba de tema: {theme}
           </div>
         </div>
       </CardContent>

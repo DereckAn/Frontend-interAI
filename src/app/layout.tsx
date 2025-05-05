@@ -2,7 +2,7 @@ import { Header } from "@/src/components/ui/shared/Header";
 import { Toaster } from "@/src/components/ui/sonner";
 import type { Metadata } from "next";
 import { Bodoni_Moda, Teachers } from "next/font/google";
-import { Providers } from "../components/ui/shared/providers";
+import { SessionProviders } from "../context/SessionProvider";
 import "./globals.css";
 
 // Primary font - Teachers (using Inter as fallback if Teachers isn't available)
@@ -32,14 +32,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${teachers.className} ${bodoniModa.variable} antialiased max-w-[1690px] items-center content-center mx-auto`}
       >
-        <Providers>
+        <SessionProviders>
           <Header />
-          <main className="pt-24 px-5 sm:px-0">{children}</main>
-        </Providers>
+          <main className="pt-24 px-5 sm:px-0 ">{children}</main>
+        </SessionProviders>
         <Toaster />
       </body>
     </html>

@@ -17,6 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { OauthButons } from "./OauthButtons";
 
 interface FormData extends z.infer<typeof loginFormSchema> {}
 
@@ -140,6 +141,9 @@ export const LoginCard = ({ onToggleView }: { onToggleView: () => void }) => {
             <span className="bg-background px-2 text-muted-foreground">Or</span>
           </div>
         </div>
+
+        <OauthButons/>
+        
         <p className="text-center text-sm text-muted-foreground">
           Don't have an account?{" "}
           <button

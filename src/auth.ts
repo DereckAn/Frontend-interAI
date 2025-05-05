@@ -7,6 +7,7 @@ import type { NextAuthConfig, User } from "next-auth";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
+import GitHub from "next-auth/providers/github";
 
 /**
  * Configuración principal de autenticación
@@ -21,6 +22,11 @@ export const authConfig = {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: { params: { scope: "openid email profile" } },
+    }),
+    GitHub({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      authorization: { params: { scope: "user:email" } },
     }),
     Credentials({
       name: "Credentials",

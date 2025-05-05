@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { OauthButons } from "./OauthButtons";
 
 interface FormData extends z.infer<typeof registerFormSchema> {}
 
@@ -212,6 +213,9 @@ export const RegisterCard = ({
             <span className="bg-background px-2 text-muted-foreground">Or</span>
           </div>
         </div>
+
+        <OauthButons />
+
         <p className="text-center text-sm text-muted-foreground">
           Already have an account?{" "}
           <button

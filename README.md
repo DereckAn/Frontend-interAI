@@ -37,6 +37,12 @@ curl -fsSL https://bun.sh/install | bash
 For Windows, you'll need WSL (Windows Subsystem for Linux):
 
 1. Install WSL following the [official instructions](https://docs.microsoft.com/en-us/windows/wsl/install)
+
+```powershell
+powershell -c "irm bun.sh/install.ps1 | iex"
+```
+then restart your terminal or open a new one or restart your computer.
+
 2. Inside your Linux distribution in WSL, run:
 
 ```bash

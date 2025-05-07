@@ -129,5 +129,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 Developed with ❤️ by [Dereck Angeles](https://github.com/DereckAn)
-
-        Too many current requests. Your queue position is 1. Please wait for a while or switch to other models for a smoother experience.

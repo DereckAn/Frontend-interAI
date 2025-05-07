@@ -1,36 +1,133 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# InterviewAI - Technical Interview Simulator
 
-## Getting Started
+![InterviewAI Logo](https://via.placeholder.com/150)
 
-First, run the development server:
+## 📋 Description
+
+InterviewAI is a SaaS platform developed with Next.js that simulates technical interviews for technology professionals. Our application allows users to practice customized interviews based on their experience, preferred programming language, and the position they're applying for.
+
+### ✨ Key Features
+
+- **AI-powered Interviewer**: Simulates real interviews adapting to your responses
+- **Complete Customization**: Select your experience level, programming language, and position type
+- **Practical Exercises**: Solve coding problems in real-time
+- **Resume Analysis**: Upload your CV to get personalized questions
+- **Different Difficulty Levels**: From junior to senior level
+- **Detailed Feedback**: Receive comments on your answers and areas for improvement
+
+## 🚀 Prerequisites
+
+To run this project you'll need:
+
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [Bun](https://bun.sh/) (our preferred package manager)
+- [Docker](https://www.docker.com/) (for the database)
+- "Backend-interAI" backend project running
+
+## 💻 Installing Bun
+
+### macOS and Linux
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+curl -fsSL https://bun.sh/install | bash
+```
+
+### Windows
+
+For Windows, you'll need WSL (Windows Subsystem for Linux):
+
+1. Install WSL following the [official instructions](https://docs.microsoft.com/en-us/windows/wsl/install)
+2. Inside your Linux distribution in WSL, run:
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+## 🛠️ Project Setup
+
+1. Clone this repository:
+
+```bash
+git clone https://github.com/DereckAn/Frontend-interAI
+cd practice-inter
+```
+
+2. Install dependencies:
+
+```bash
+bun install
+```
+
+3. Configure the `.env` file in the project root:
+
+```
+NEXT_PUBLIC_API_URL=http://localhost:3001/
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_secret_here
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+```
+
+4. Start the database with Docker:
+
+```bash
+docker-compose up -d
+```
+
+5. Start the "Backend-interAI" backend project (follow instructions in its repository)
+
+6. Start the development server:
+
+```bash
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+7. Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📊 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+Frontend-interAI/
+├── src/
+│   ├── app/              # Next.js routes and pages
+│   ├── components/       # Reusable components
+│   ├── lib/              # Utilities and constants
+│   ├── types/            # TypeScript type definitions
+│   └── data/             # Static data and mocks
+├── public/               # Static files
+├── .env                  # Environment variables (not included in the repository)
+└── ...                   # Other configuration files
+```
 
-## Learn More
+## 🧪 Technologies Used
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.js 15](https://nextjs.org/) - React framework
+- [React 19](https://reactjs.org/) - UI library
+- [TypeScript](https://www.typescriptlang.org/) - Static typing
+- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+- [NextAuth.js](https://next-auth.js.org/) - Authentication
+- [Framer Motion](https://www.framer.com/motion/) - Animations
+- [Radix UI](https://www.radix-ui.com/) - Accessible components
+- [Bun](https://bun.sh/) - Package manager and runtime environment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🤝 Contribution
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Contributions are welcome. Please follow these steps:
 
-## Deploy on Vercel
+1. Fork the repository
+2. Create a branch for your feature (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add an amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📄 License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+Developed with ❤️ by [Dereck Angeles](https://github.com/DereckAn)
+
+        Too many current requests. Your queue position is 1. Please wait for a while or switch to other models for a smoother experience.

@@ -5,22 +5,34 @@ import { ArrowRight, Play } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { useFormDataStore } from "@/src/store/formDataStore";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 export const ButtonStart = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { data: session } = useSession();
   
   // Obtener datos y función de envío del store
   const { 
+    setUserId,
     submitFormData, 
     isSubmitting,
     resumeFile,
     jobDescription,
     difficultyLevel,
     programmingLanguage,
-    selectedTopic
+    selectedTopic,
+    userId
   } = useFormDataStore();
+
+  // Establecer el ID del usuario cuando la sesión esté disponible
+  useEffect(() => {
+    if (session?.user?.id) {
+      setUserId(session.user.id);
+      console.log("ID de usuario establecido:", session.user.id);
+    }
+  }, [session, setUserId]);
 
   const handleStartInterview = async () => {
     setIsLoading(true);
@@ -43,6 +55,11 @@ export const ButtonStart = () => {
         alert("Please add a topic");
         setIsLoading(false);
         return;
+      }
+      
+      // Asegurarse de que el ID del usuario esté establecido antes de enviar
+      if (session?.user?.id && (!userId || userId !== session.user.id)) {
+        setUserId(session.user.id);
       }
       
       // Enviar datos a la API

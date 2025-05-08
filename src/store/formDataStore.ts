@@ -3,6 +3,9 @@ import { create } from "zustand";
 import { setInfo } from "../actions/sentInfo";
 
 interface FormDataState {
+
+  userId: string | null;
+
   // Resume data
   resumeFile: File | null;
 
@@ -20,6 +23,7 @@ interface FormDataState {
   selectedTopic: string | null;
 
   // Actions
+  setUserId: (userId: string) => void;
   setResumeFile: (file: File | null) => void;
   setJobDescription: (description: string) => void;
   setDifficultyLevel: (level: DifficultyLevel, years: number) => void;
@@ -33,6 +37,7 @@ interface FormDataState {
 }
 
 const initialState = {
+  userId: null,
   resumeFile: null,
   jobDescription: "",
   difficultyLevel: "Mid-Level" as DifficultyLevel,
@@ -44,6 +49,8 @@ const initialState = {
 
 export const useFormDataStore = create<FormDataState>((set, get) => ({
   ...initialState,
+
+  setUserId: (userId) => set({ userId }), // Add this line to set the userId in the store
 
   setResumeFile: (file) => set({ resumeFile: file }),
 
@@ -79,6 +86,7 @@ export const useFormDataStore = create<FormDataState>((set, get) => ({
 
       // Add other data as JSON
       const jsonData = {
+        userId: state.userId,
         jobDescription: state.jobDescription,
         difficultyLevel: state.difficultyLevel,
         yearsOfExperience: state.yearsOfExperience,

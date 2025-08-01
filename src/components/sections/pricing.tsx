@@ -1,11 +1,16 @@
 "use client";
 
-import { Check } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/src/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/src/components/ui/card";
 import { motion } from "framer-motion";
-import { Badge } from "../ui/badge";
-
+import { Check } from "lucide-react";
 
 const pricingPlans = [
   {
@@ -16,10 +21,10 @@ const pricingPlans = [
       "3 practice interviews",
       "Basic question bank",
       "Junior level interviews only",
-      "Standard feedback"
+      "Standard feedback",
     ],
     cta: "Get Started",
-    popular: false
+    popular: false,
   },
   {
     name: "Professional",
@@ -33,10 +38,10 @@ const pricingPlans = [
       "Detailed performance feedback",
       "Resume analysis",
       "Custom interview scenarios",
-      "48-hour email support"
+      "48-hour email support",
     ],
     cta: "Get Started",
-    popular: true
+    popular: true,
   },
   {
     name: "Team",
@@ -50,16 +55,19 @@ const pricingPlans = [
       "Interview recommendation engine",
       "Custom question library",
       "Manager dashboard",
-      "Priority support"
+      "Priority support",
     ],
     cta: "Contact Sales",
-    popular: false
-  }
+    popular: false,
+  },
 ];
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="w-full py-20 flex items-center justify-center">
+    <section
+      id="pricing"
+      className="w-full py-20 flex items-center justify-center"
+    >
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
           <div className="inline-block rounded-full bg-primary/10 px-3 py-1 text-sm text-primary">
@@ -69,10 +77,12 @@ export function PricingSection() {
             Choose the Right Plan for Your Needs
           </h2>
           <p className="max-w-[700px] text-muted-foreground md:text-xl">
-            Flexible pricing options to help you prepare for your next interview, whether you're just starting out or a seasoned professional.
+            Flexible pricing options to help you prepare for your next
+            interview, whether you're just starting out or a seasoned
+            professional.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-8">
           {pricingPlans.map((plan, i) => (
             <motion.div
@@ -83,19 +93,24 @@ export function PricingSection() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="flex"
             >
-              <Card className={`flex flex-col w-full ${plan.popular ? 'border-primary shadow-lg relative' : ''}`}>
-                {plan.popular && (
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <Badge className="bg-primary hover:bg-primary">Most Popular</Badge>
-                  </div>
-                )}
+              <Card
+                className={`flex flex-col w-full ${
+                  plan.popular ? "border-primary shadow-lg relative" : ""
+                }`}
+              >
                 <CardHeader>
                   <CardTitle className="text-2xl">{plan.name}</CardTitle>
                   <div className="flex items-baseline mt-4">
                     <span className="text-4xl font-bold">{plan.price}</span>
-                    {plan.period && <span className="ml-2 text-muted-foreground">{plan.period}</span>}
+                    {plan.period && (
+                      <span className="ml-2 text-muted-foreground">
+                        {plan.period}
+                      </span>
+                    )}
                   </div>
-                  <CardDescription className="mt-2">{plan.description}</CardDescription>
+                  <CardDescription className="mt-2">
+                    {plan.description}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow">
                   <ul className="space-y-3">
@@ -108,9 +123,11 @@ export function PricingSection() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button 
-                    className={`w-full ${plan.popular ? 'bg-primary hover:bg-primary/90' : ''}`}
-                    variant={plan.popular ? 'default' : 'outline'}
+                  <Button
+                    className={`w-full ${
+                      plan.popular ? "bg-primary hover:bg-primary/90" : ""
+                    }`}
+                    // variant={plan.popular ? "default" : "outline"}
                   >
                     {plan.cta}
                   </Button>
@@ -119,10 +136,11 @@ export function PricingSection() {
             </motion.div>
           ))}
         </div>
-        
+
         <div className="mt-12 text-center">
           <p className="text-muted-foreground">
-            All plans include a 14-day money-back guarantee. No long-term contracts required.
+            All plans include a 14-day money-back guarantee. No long-term
+            contracts required.
           </p>
         </div>
       </div>

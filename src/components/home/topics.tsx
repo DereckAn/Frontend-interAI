@@ -47,7 +47,7 @@ export const TopiCards = () => {
   };
 
   return (
-    <section className="bg-gray2/10 dark:bg-gray2/30 rounded-xl p-3 sm:p-5 scrollbar-hidden scrollbar-hidden">
+    <section className="bg-gray2/10 rounded-xl p-3 sm:p-5 scrollbar-hidden scrollbar-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <h2
           className="text-xl sm:text-2xl font-semibold"
@@ -58,7 +58,7 @@ export const TopiCards = () => {
 
         {/* Search input with Tailwind focus states */}
         <div className="relative max-w-xs">
-          <div className="flex items-center border-2 border-gray2/20 rounded-lg px-3 py-2 transition-all duration-200 focus-within:border-gray2/30 focus-within:bg-background">
+          <div className="flex items-center border-2 border-gray2/20 bg-gray2/5 rounded-lg px-3 py-2 transition-all duration-200 focus-within:border-gray2/30 focus-within:bg-background">
             <Search className="w-4 h-4 mr-2 " />
             <input
               type="text"
@@ -151,7 +151,7 @@ export const TopiCards = () => {
 
                     {isSelected && topic.description && (
                       <div className="mt-2 w-full ">
-                        <p className="text-sm text-gray-600 line-clamp-2">
+                        <p className="text-sm text-text/50 line-clamp-2">
                           {topic.description}
                         </p>
                       </div>

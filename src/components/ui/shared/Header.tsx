@@ -37,20 +37,23 @@ const authenticatedLinks = [
     label: "History",
     isScrollLink: false,
   },
-  {
-    href: "/settings",
-    label: "Settings",
+   {
+    href: "/fill_information",
+    label: "Fill Information",
     isScrollLink: false,
   },
   {
     href: "/interviews",
     label: "Interviews",
     isScrollLink: false,
-  },{
-    href: "/fill_information",
-    label: "Fill Information",
+  },
+  {
+    href: "/settings",
+    label: "Settings",
     isScrollLink: false,
-  }
+  },
+  
+ 
 ];
 
 export const Header = () => {

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Code, Search, X, Check } from 'lucide-react';
-import { useFormDataStore } from '@/src/store/formDataStore';
+import { useFormDataStore } from "@/src/store/formDataStore";
+import { AnimatePresence, motion } from "framer-motion";
+import { Check, Code, Search, X } from "lucide-react";
+import { useState } from "react";
 
 // Definir la interfaz para los lenguajes que vienen del API
 interface Language {
@@ -21,58 +21,62 @@ interface ProgrammingLanguage extends Language {
 
 // Mapa de colores para los lenguajes más comunes
 const languageColors: Record<string, string> = {
-  'JavaScript': '#f7df1e',
-  'TypeScript': '#3178c6',
-  'Python': '#3776ab',
-  'Java': '#007396',
-  'C#': '#239120',
-  'C++': '#00599c',
-  'Go': '#00add8',
-  'Rust': '#dea584',
-  'Ruby': '#cc342d',
-  'PHP': '#777bb4',
-  'Swift': '#fa7343',
-  'Kotlin': '#7f52ff',
-  'SQL': '#4479a1',
+  JavaScript: "#f7df1e",
+  TypeScript: "#3178c6",
+  Python: "#3776ab",
+  Java: "#007396",
+  "C#": "#239120",
+  "C++": "#00599c",
+  Go: "#00add8",
+  Rust: "#dea584",
+  Ruby: "#cc342d",
+  PHP: "#777bb4",
+  Swift: "#fa7343",
+  Kotlin: "#7f52ff",
+  SQL: "#4479a1",
   // Color por defecto para otros lenguajes
-  'default': '#6b7280'
+  default: "#6b7280",
 };
 
 interface LanguageSelectorClientProps {
   languages: Language[];
 }
 
-export const LanguageSelectorClient = ({ languages }: LanguageSelectorClientProps) => {
+export const LanguageSelectorClient = ({
+  languages,
+}: LanguageSelectorClientProps) => {
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  
+
   // Agregar el store para guardar el lenguaje
-  const setProgrammingLanguage = useFormDataStore(state => state.setProgrammingLanguage);
+  const setProgrammingLanguage = useFormDataStore(
+    (state) => state.setProgrammingLanguage
+  );
 
   // Transformar los datos para agregar icon y color
-  const enhancedLanguages: ProgrammingLanguage[] = languages.map(lang => {
+  const enhancedLanguages: ProgrammingLanguage[] = languages.map((lang) => {
     // Obtener las iniciales del nombre para el icono
     const initials = lang.name.substring(0, 2).toUpperCase();
-    
+
     // Obtener el color del mapa o usar el color por defecto
     const color = languageColors[lang.name] || languageColors.default;
-    
+
     return {
       ...lang,
       icon: initials,
-      color
+      color,
     };
   });
 
-  const filteredLanguages = enhancedLanguages.filter(lang => 
+  const filteredLanguages = enhancedLanguages.filter((lang) =>
     lang.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleLanguageSelect = (langId: string) => {
     const newSelection = langId === selectedLanguage ? null : langId;
     setSelectedLanguage(newSelection);
-    
+
     // Guardar en el store global
     setProgrammingLanguage(newSelection);
   };
@@ -82,7 +86,7 @@ export const LanguageSelectorClient = ({ languages }: LanguageSelectorClientProp
   };
 
   const clearSearch = () => {
-    setSearchQuery('');
+    setSearchQuery("");
   };
 
   return (
@@ -96,39 +100,31 @@ export const LanguageSelectorClient = ({ languages }: LanguageSelectorClientProp
         <div className="w-10 h-10 rounded-full bg-gray2/15 flex items-center justify-center">
           <Code className="w-5 h-5" />
         </div>
-        <h3 className="text-lg font-medium">
-          Select a language
-        </h3>
+        <h3 className="text-lg font-medium">Select a language</h3>
       </div>
-      
+
       {/* Search input */}
       <div className="relative mb-6">
-        <div className={`flex items-center border-2 rounded-lg px-3 py-2 ${
-          isSearchFocused 
-            ? 'border-gray2/30 bg-white' 
-            : 'border-gray2/20 bg-white/80'
-        } transition-all duration-200`}>
-          <Search className="w-5 h-5 text-gray-400 mr-2" />
+        <div className="flex items-center border-2 border-gray2/20 bg-gray2/5 rounded-lg px-3 py-2 transition-all duration-200 focus-within:border-gray2/30 focus-within:bg-background">
+          <Search className="w-4 h-4 mr-2 " />
           <input
             type="text"
             value={searchQuery}
-            onChange={handleSearchChange}
-            onFocus={() => setIsSearchFocused(true)}
-            onBlur={() => setIsSearchFocused(false)}
-            placeholder="Search languages..."
-            className="flex-1 bg-transparent outline-none text-sm"
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search Languages..."
+            className="flex-1 bg-transparent outline-none text-sm "
           />
           {searchQuery && (
-            <button 
+            <button
               onClick={clearSearch}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-text hover:text-gray-600"
             >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
       </div>
-      
+
       {/* Language grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         <AnimatePresence>
@@ -144,12 +140,12 @@ export const LanguageSelectorClient = ({ languages }: LanguageSelectorClientProp
               onClick={() => handleLanguageSelect(lang.id)}
               className={`relative cursor-pointer rounded-lg p-3 border-2 ${
                 selectedLanguage === lang.id
-                  ? 'border-gray2/30 bg-gray2/10'
-                  : 'border-gray2/10 hover:border-gray2/20 bg-white/50'
+                  ? "border-gray2/30 bg-gray2/10 dark:bg-gray2/40 dark:border-gray2/40"
+                  : "border-gray2/10 hover:border-gray2/20 bg-white/50 dark:bg-gray2/10 dark:hover:bg-gray2/20"
               } transition-all duration-200`}
             >
               <div className="flex items-center gap-3">
-                <div 
+                <div
                   className="w-8 h-8 rounded-md flex items-center justify-center text-white font-medium text-xs"
                   style={{ backgroundColor: lang.color }}
                 >
@@ -157,7 +153,7 @@ export const LanguageSelectorClient = ({ languages }: LanguageSelectorClientProp
                 </div>
                 <span className="font-medium text-sm">{lang.name}</span>
               </div>
-              
+
               {selectedLanguage === lang.id && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.5 }}
@@ -171,25 +167,24 @@ export const LanguageSelectorClient = ({ languages }: LanguageSelectorClientProp
           ))}
         </AnimatePresence>
       </div>
-      
+
       {filteredLanguages.length === 0 && (
         <div className="text-center py-8 text-gray-500">
           <p>No languages found matching "{searchQuery}"</p>
         </div>
       )}
-      
-      
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="mt-6 p-4 bg-gray2/10 rounded-lg"
-        >
-          <p className="text-sm">
-            <span className="font-medium">Selected language:</span> {enhancedLanguages.find(l => l.id === selectedLanguage)?.name}
-          </p>
-        </motion.div>
-      
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="mt-6 p-4 bg-gray2/10 rounded-lg"
+      >
+        <p className="text-sm">
+          <span className="font-medium">Selected language:</span>{" "}
+          {enhancedLanguages.find((l) => l.id === selectedLanguage)?.name}
+        </p>
+      </motion.div>
     </motion.div>
   );
 };

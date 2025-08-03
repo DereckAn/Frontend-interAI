@@ -79,7 +79,7 @@ export const JobDescription = () => {
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             placeholder={getPlaceholderText()}
-            className="w-full min-h-[200px] p-4 rounded-lg bg-white/50 border border-gray2/20 focus:outline-none focus:ring-1 focus:ring-gray2/30 resize-y"
+            className="w-full min-h-[200px] p-4 rounded-lg bg-gray2/10 border border-gray2/20 focus:outline-none focus:ring-1 focus:ring-gray2/30 resize-y"
             spellCheck="false"
           />
           

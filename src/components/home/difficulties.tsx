@@ -91,8 +91,8 @@ export const DifficultySelector = () => {
               onClick={() => handleDifficultyChange(option.value)}
               className={`relative cursor-pointer rounded-lg p-4 ${
                 selectedDifficulty === option.value
-                  ? 'bg-gray2/15 border-2 border-gray2/30'
-                  : 'bg-white/50 border-2 border-gray2/10 hover:border-gray2/20'
+                  ? 'bg-gray2/15 dark: border-2 border-gray2/30'
+                  : 'bg-background dark: border-2 border-gray2/10 hover:border-gray2/20'
               } transition-all duration-200`}
             >
               <div className="flex items-center gap-3 mb-2">
@@ -105,15 +105,19 @@ export const DifficultySelector = () => {
                 </div>
                 <h3 className="font-medium">{option.label}</h3>
               </div>
-              <p className="text-sm text-gray-600">{option.description}</p>
-              
+              <p className={`text-sm ${
+                  selectedDifficulty === option.value
+                    ? 'text-gray2/80'
+                    : 'text-gray2/30'
+                }`}>{option.description}</p>
+
               {selectedDifficulty === option.value && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="absolute -top-2 -right-2 w-5 h-5 bg-gray2/20 rounded-full flex items-center justify-center"
                 >
-                  <div className="w-2 h-2 rounded-full bg-gray-800"></div>
+                  <div className="w-2 h-2 rounded-full bg-gray2/80"></div>
                 </motion.div>
               )}
             </motion.div>

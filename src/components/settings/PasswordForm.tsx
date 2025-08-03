@@ -12,7 +12,7 @@ export function PasswordForm() {
         <input
           id="current-password"
           type="password"
-          className="w-full p-2 border rounded-md"
+          className="w-full p-2  bg-gray2/10 rounded-md"
         />
       </div>
       <div className="space-y-2">
@@ -22,7 +22,7 @@ export function PasswordForm() {
         <input
           id="new-password"
           type="password"
-          className="w-full p-2 border rounded-md"
+          className="w-full p-2  bg-gray2/10 rounded-md"
         />
       </div>
       <div className="space-y-2">
@@ -32,10 +32,10 @@ export function PasswordForm() {
         <input
           id="confirm-password"
           type="password"
-          className="w-full p-2 border rounded-md"
+          className="w-full p-2  bg-gray2/10 rounded-md"
         />
       </div>
-      <Button>Update Password</Button>
+      <Button variant="outline">Update Password</Button>
     </div>
   );
 }

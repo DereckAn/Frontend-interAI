@@ -17,7 +17,12 @@ import { Clock, CreditCard, FileText, Sun, User } from "lucide-react";
 export default function SettingsPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
-      <h1 className="text-3xl font-bold mb-6">Account Settings</h1>
+      <h1
+        className="text-3xl font-bold mb-6"
+        style={{ fontFamily: "var(--font-bodoni)" }}
+      >
+        Account Settings
+      </h1>
 
       <Tabs defaultValue="profile" className="space-y-6">
         <TabsList className="grid grid-cols-2 md:grid-cols-5 gap-2">

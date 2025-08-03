@@ -17,7 +17,7 @@ export function ProfileForm() {
             id="name"
             type="text"
             defaultValue={session?.user?.name || ""}
-            className="w-full p-2 border rounded-md"
+            className="w-full p-2 rounded-md bg-gray2/10 dark:bg-gray2/30"
           />
         </div>
         <div className="space-y-2">
@@ -28,12 +28,14 @@ export function ProfileForm() {
             id="email"
             type="email"
             defaultValue={session?.user?.email || ""}
-            className="w-full p-2 border rounded-md"
+            className="w-full p-2 rounded-md bg-gray2/10 dark:bg-gray2/30"
           />
         </div>
       </div>
 
-      <Button className="mt-4">Save Changes</Button>
+      <Button className="mt-4" variant="outline">
+        Save Changes
+      </Button>
     </div>
   );
 }

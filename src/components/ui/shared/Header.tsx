@@ -32,21 +32,21 @@ const unauthenticatedLinks = [
 
 // Enlaces para usuarios autenticados
 const authenticatedLinks = [
-  {
-    href: "/historial",
-    label: "History",
-    isScrollLink: false,
-  },
+//   {
+//     href: "/historial",
+//     label: "History",
+//     isScrollLink: false,
+//   },
    {
     href: "/fill_information",
-    label: "Fill Information",
+    label: "Start Interview",
     isScrollLink: false,
   },
-  {
-    href: "/interviews",
-    label: "Interviews",
-    isScrollLink: false,
-  },
+//   {
+//     href: "/interviews",
+//     label: "Interviews",
+//     isScrollLink: false,
+//   },
   {
     href: "/settings",
     label: "Settings",
@@ -113,11 +113,6 @@ export const Header = () => {
             )}
           </li>
         ))}
-        {status === "authenticated" && (
-          <li>
-            <LogoutButton />
-          </li>
-        )}
       </ul>
 
       {/* Mobile Menu Button */}

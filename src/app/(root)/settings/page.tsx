@@ -1,5 +1,6 @@
 "use client";
 
+import { LogoutButton } from "@/src/components/authentication/LogoutButton";
 import { AppearanceTab } from "@/src/components/settings/AppearanceTab";
 import { DangerZone } from "@/src/components/settings/DangerZone";
 import { DocumentsTab } from "@/src/components/settings/DocumentsTab";
@@ -25,6 +26,8 @@ export default function SettingsPage() {
       </h1>
 
       <Tabs defaultValue="profile" className="space-y-6">
+        <div className="flex items-center justify-between mb-4">
+
         <TabsList className="grid grid-cols-2 md:grid-cols-5 gap-2">
           <TabsTrigger value="profile" className="flex items-center gap-2">
             <User className="h-4 w-4" />
@@ -47,6 +50,8 @@ export default function SettingsPage() {
             <span className="hidden md:inline">Subscription</span>
           </TabsTrigger>
         </TabsList>
+          <LogoutButton />
+        </div>
 
         <TabsContent value="profile">
           <ProfileTab />

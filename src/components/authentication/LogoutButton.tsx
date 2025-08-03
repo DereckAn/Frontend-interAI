@@ -3,6 +3,7 @@
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Button } from "../ui/button";
 
 export const LogoutButton = () => {
   const router = useRouter();
@@ -43,8 +44,8 @@ export const LogoutButton = () => {
   };
 
   return (
-    <button onClick={handleLogout} className="text-red-500 hover:underline">
+    <Button onClick={handleLogout} className="" variant='destructive'>
       Logout
-    </button>
+    </Button>
   );
 };

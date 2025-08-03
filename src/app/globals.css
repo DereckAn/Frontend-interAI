@@ -1,37 +1,54 @@
 @import "tailwindcss";
 
-@theme {
-  --color-background: hsl(60 23.81% 95.882%);
-  --color-foreground: hsl(358 26% 70%);
-  --color-border: hsl(358 28% 47%);
-  --color-text: hsl(0 39% 15%);
-  --color-accent: hsl(220 100% 50%);
-  --color-secondary: hsl(220 14% 96%);
-  --color-muted: hsl(220 14% 93%);
-  --color-pinko: hsl(358 28% 85%);
-  --color-gray2: hsl(none 0% 7.0588%);
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-text: var(--text);
+  --color-accent: var(--accent);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-pinko: var(--pinko);
+  --color-gray2: var(--gray2);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary-bg: var(--secondary-bg);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-radius: var(--radius);
 }
 
 :root {
-  --background: var(--color-background);
-  --foreground: var(--color-text);
-  --text: var(--color-text);
-  --accent: var(--color-accent);
-  --secondary: var(--color-secondary);
-  --muted: var(--color-muted);
-  --border: var(--color-border);
-  --pinko: var(--color-pinko);
-  --gray2: var(--color-gray2);
+  --background: hsl(60 23.81% 95.882%);
+  --foreground: hsl(0 39% 15%);
+  --text: hsl(0 39% 15%);
+  --accent: hsl(220 100% 50%);
+  --secondary: hsl(220 14% 96%);
+  --muted: hsl(220 14% 93%);
+  --border: hsl(358 28% 47%);
+  --pinko: hsl(358 28% 85%);
+  --gray2: hsl(0 0% 7.0588%);
   --card: hsl(0 0% 100%);
-  --card-foreground: var(--color-text);
+  --card-foreground: hsl(0 39% 15%);
   --popover: hsl(0 0% 100%);
-  --popover-foreground: var(--color-text);
-  --primary: var(--color-accent);
+  --popover-foreground: hsl(0 39% 15%);
+  --primary: hsl(220 100% 50%);
   --primary-foreground: hsl(0 0% 100%);
-  --secondary-bg: var(--color-secondary);
-  --secondary-foreground: var(--color-text);
-  --input: var(--color-border);
-  --ring: var(--color-accent);
+  --secondary-bg: hsl(220 14% 96%);
+  --secondary-foreground: hsl(0 39% 15%);
+  --input: hsl(358 28% 47%);
+  --ring: hsl(220 100% 50%);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0 0% 98%);
   --muted-foreground: hsl(0 39% 45%);
@@ -40,29 +57,29 @@
 }
 
 .dark {
-  --background: hsl(20 14% 8%);
-  --foreground: hsl(60 23% 92%);
-  --text: hsl(60 23% 92%);
+  --background: hsl(0 0% 18%);
+  --foreground: hsl(0 0% 86%);
+  --text: hsl(0 0% 86%);
   --accent: hsl(220 100% 65%);
   --secondary: hsl(20 14% 12%);
   --muted: hsl(20 14% 15%);
   --border: hsl(358 28% 25%);
   --pinko: hsl(358 28% 35%);
-  --gray2: hsl(0 0% 15%);
+  --gray2: hsl(0 0% 86%);
   --card: hsl(20 14% 10%);
-  --card-foreground: hsl(60 23% 92%);
+  --card-foreground: hsl(0 0% 86%);
   --popover: hsl(20 14% 10%);
-  --popover-foreground: hsl(60 23% 92%);
+  --popover-foreground: hsl(0 0% 86%);
   --primary: hsl(220 100% 65%);
-  --primary-foreground: hsl(20 14% 8%);
+  --primary-foreground: hsl(0 0% 18%);
   --secondary-bg: hsl(20 14% 12%);
-  --secondary-foreground: hsl(60 23% 92%);
+  --secondary-foreground: hsl(0 0% 86%);
   --input: hsl(20 14% 18%);
   --ring: hsl(220 100% 65%);
   --destructive: hsl(0 84% 60%);
-  --destructive-foreground: hsl(60 23% 92%);
+  --destructive-foreground: hsl(0 0% 86%);
   --muted-foreground: hsl(60 23% 70%);
-  --accent-foreground: hsl(20 14% 8%);
+  --accent-foreground: hsl(0 0% 18%);
 }
 
 @layer base {
@@ -70,4 +87,9 @@
     background-color: var(--background);
     color: var(--text);
   }
+}
+
+.scrollbar-hidden {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
 }

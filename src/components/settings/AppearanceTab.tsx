@@ -9,20 +9,18 @@ import {
   CardTitle,
 } from "@/src/components/ui/card";
 import { Monitor, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useTheme } from "@/src/hooks/useTheme";
+import { useEffect } from "react";
 import { toast } from "sonner";
 
 export function AppearanceTab() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme, mounted } = useTheme();
 
   useEffect(() => {
-    setMounted(true);
     console.log("Current theme:", theme); // Depuración
   }, [theme]);
 
-  const handleThemeChange = (newTheme: string) => {
+  const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
     setTheme(newTheme);
     const themeNames = {
       light: "claro",
@@ -59,7 +57,7 @@ export function AppearanceTab() {
                 onClick={() => handleThemeChange("light")}
               >
                 <Sun className="h-4 w-4" />
-                Claro
+                Light
               </Button>
               <Button
                 variant={theme === "dark" ? "default" : "outline"}
@@ -67,7 +65,7 @@ export function AppearanceTab() {
                 onClick={() => handleThemeChange("dark")}
               >
                 <Moon className="h-4 w-4" />
-                Oscuro
+                Dark
               </Button>
               <Button
                 variant={theme === "system" ? "default" : "outline"}
@@ -75,7 +73,7 @@ export function AppearanceTab() {
                 onClick={() => handleThemeChange("system")}
               >
                 <Monitor className="h-4 w-4" />
-                Sistema
+                System
               </Button>
             </div>
             <p className="mt-4 text-sm text-muted-foreground">

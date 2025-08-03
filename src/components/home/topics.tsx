@@ -47,7 +47,7 @@ export const TopiCards = () => {
   };
 
   return (
-    <section className="bg-gray2/15 rounded-xl p-3 sm:p-5 scrollbar-hidden">
+    <section className="bg-gray2/10 dark:bg-gray2/30 rounded-xl p-3 sm:p-5 scrollbar-hidden scrollbar-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <h2
           className="text-xl sm:text-2xl font-semibold"
@@ -58,19 +58,19 @@ export const TopiCards = () => {
 
         {/* Search input with Tailwind focus states */}
         <div className="relative max-w-xs">
-          <div className="flex items-center border-2 border-gray2/20 bg-white/80 rounded-lg px-3 py-2 transition-all duration-200 focus-within:border-gray2/30 focus-within:bg-white">
-            <Search className="w-4 h-4 text-gray-400 mr-2" />
+          <div className="flex items-center border-2 border-gray2/20 rounded-lg px-3 py-2 transition-all duration-200 focus-within:border-gray2/30 focus-within:bg-background">
+            <Search className="w-4 h-4 mr-2 " />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search topics..."
-              className="flex-1 bg-transparent outline-none text-sm"
+              className="flex-1 bg-transparent outline-none text-sm "
             />
             {searchQuery && (
               <button
                 onClick={clearSearch}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-text hover:text-gray-600"
               >
                 <X className="w-4 h-4" />
               </button>

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/src/hooks/useTheme";
 
 import { Button } from "@/src/components/ui/button";
 import {
@@ -13,7 +13,7 @@ import {
 } from "@/src/components/ui/dropdown-menu";
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
 
   return (
     <DropdownMenu>

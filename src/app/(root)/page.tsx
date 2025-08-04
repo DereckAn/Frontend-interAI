@@ -9,7 +9,7 @@ import { TestimonialsSection } from "@/src/components/sections/testimonials";
 export default function Home() {
   return (
     <div className="flex flex-col items-center">
-        <HeroAnimation />
+      <HeroAnimation />
       <HeroSection />
       <FeaturesSection />
       <HowItWorksSection />

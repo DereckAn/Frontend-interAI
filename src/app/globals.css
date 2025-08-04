@@ -27,6 +27,18 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent-foreground: var(--accent-foreground);
   --color-radius: var(--radius);
+
+  --color-black-200: #081e13;
+  --color-black-100: #112c2e;
+  --color-off-white: #fbfaf6;
+  --color-white: #ffffff;
+
+  /* Primary Greens */
+  --color-green-500: #153e2a;
+  --color-green-400: #30715d;
+  --color-green-300: #6e9e8f;
+  --color-green-200: #00b684;
+  --color-green-100: #ccddc7;
 }
 
 :root {
@@ -92,4 +104,84 @@
 .scrollbar-hidden {
   scrollbar-width: none;
   scrollbar-color: transparent transparent;
+}
+
+@keyframes slideLeft {
+  0% {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(-300px);
+  }
+}
+
+/**
+   * Shrinks an element's width and height to 0, while also changing its opacity to 0.
+   *
+   * This animation is used to hide the hero section of the homepage when the user
+   * clicks on the "Learn More" button.
+   */
+@keyframes shrinkWidth {
+  0% {
+    width: 100%;
+    height: 5em;
+    flex: 1;
+    opacity: 1;
+  }
+
+  100% {
+    width: 0%;
+    height: 0em;
+    flex: 0;
+    margin: 0;
+    padding: 0;
+    display: none;
+  }
+}
+
+@keyframes colorTransition {
+  0% {
+    color: var(--green-500);
+    transform: skewX(0deg);
+  }
+  10% {
+    color: #1f4b31;
+    transform: skewX(-1deg);
+  }
+  20% {
+    color: #255038;
+    transform: skewX(-2deg);
+  }
+  30% {
+    color: #2b553f;
+    transform: skewX(-3deg);
+  }
+  40% {
+    color: #315a46;
+    transform: skewX(-5deg);
+  }
+  50% {
+    color: #37604d;
+    transform: skewX(-6deg);
+  }
+  60% {
+    color: #3d6554;
+    transform: skewX(-7deg);
+  }
+  70% {
+    color: #436a5b;
+    transform: skewX(-8deg);
+  }
+  80% {
+    color: #4a7062;
+    transform: skewX(-9deg);
+  }
+  90% {
+    color: #507569;
+    transform: skewX(-10deg);
+  }
+  100% {
+    color: var(--green-200);
+    transform: skewX(-12deg);
+  }
 }

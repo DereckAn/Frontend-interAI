@@ -37,7 +37,7 @@ const cardSample: CardProps[] = [
 
 const HeroAnimation = () => {
   return (
-    <section className="w-full flex flex-col justify-center items-center px-5 relative ">
+    <section className="w-full flex flex-col justify-center items-center relative -mt-24">
       <TitleAnimation />
       <div className="w-full sm:h-[40vh] lg:h-[45vh] flex sm:flex-row flex-col-reverse">
         <div className="flex basis-1/2 border-2 border-green-100 flex-col p-5 justify-between shrink-0 gap-10 ">

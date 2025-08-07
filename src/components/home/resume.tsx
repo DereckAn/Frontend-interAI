@@ -1,19 +1,24 @@
 "use client";
 
 import { useFormDataStore } from "@/src/store/formDataStore";
+import { uploadFile } from "@/src/actions/fileUpload";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, FileText, FileUp, X } from "lucide-react";
+import { Check, FileText, FileUp, X, Upload, AlertCircle } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export const ResumeUpload = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<
-    "idle" | "success" | "error"
+    "idle" | "uploading" | "success" | "error"
   >("idle");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [uploadedFileData, setUploadedFileData] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Agregar el store para guardar el archivo
+  // Session and store
+  const { data: session } = useSession();
   const setResumeFile = useFormDataStore((state) => state.setResumeFile);
 
   const handleDragEnter = useCallback((e: React.DragEvent) => {
@@ -48,6 +53,37 @@ export const ResumeUpload = () => {
     return validTypes.includes(file.type);
   };
 
+  const uploadFileToServer = async (selectedFile: File) => {
+    if (!session) {
+      setUploadStatus("error");
+      setErrorMessage("Please login to upload files");
+      return;
+    }
+
+    setUploadStatus("uploading");
+    setErrorMessage("");
+
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      const result = await uploadFile(formData, "RESUME");
+
+      if (result.success && result.fileDto) {
+        setUploadedFileData(result.fileDto);
+        setUploadStatus("success");
+        setResumeFile(selectedFile); // Keep file in store for local use
+      } else {
+        setUploadStatus("error");
+        setErrorMessage(result.error || "Upload failed");
+      }
+    } catch (error) {
+      setUploadStatus("error");
+      setErrorMessage("Network error occurred");
+      console.error("Upload error:", error);
+    }
+  };
+
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
@@ -57,24 +93,24 @@ export const ResumeUpload = () => {
       const droppedFile = e.dataTransfer.files[0];
       if (droppedFile && validateFile(droppedFile)) {
         setFile(droppedFile);
-        setResumeFile(droppedFile); // Guardar en el store global
-        setUploadStatus("success");
+        uploadFileToServer(droppedFile);
       } else {
         setUploadStatus("error");
+        setErrorMessage("Invalid file format. Please upload PDF, DOC, or DOCX files.");
         setTimeout(() => setUploadStatus("idle"), 3000);
       }
     },
-    [setResumeFile]
+    [session, uploadFileToServer]
   );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile && validateFile(selectedFile)) {
       setFile(selectedFile);
-      setResumeFile(selectedFile); // Guardar en el store global
-      setUploadStatus("success");
+      uploadFileToServer(selectedFile);
     } else if (selectedFile) {
       setUploadStatus("error");
+      setErrorMessage("Invalid file format. Please upload PDF, DOC, or DOCX files.");
       setTimeout(() => setUploadStatus("idle"), 3000);
     }
   };
@@ -86,7 +122,9 @@ export const ResumeUpload = () => {
   const removeFile = () => {
     setFile(null);
     setResumeFile(null); // Limpiar en el store global
+    setUploadedFileData(null);
     setUploadStatus("idle");
+    setErrorMessage("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -113,6 +151,8 @@ export const ResumeUpload = () => {
                 ? "border-gray2/30 bg-gray2/5"
                 : uploadStatus === "error"
                 ? "border-red-400 bg-red-50"
+                : uploadStatus === "uploading"
+                ? "border-blue-400 bg-blue-50"
                 : "border-gray2/20 hover:border-gray2/30 hover:bg-gray2/5"
             } transition-all duration-200 ease-in-out`}
             onDragEnter={handleDragEnter}
@@ -141,23 +181,40 @@ export const ResumeUpload = () => {
                   repeat: isDragging ? Infinity : 0,
                   duration: 1.5,
                 }}
-                className="w-16 h-16 rounded-full bg-gray2/20 flex items-center justify-center"
+                className={`w-16 h-16 rounded-full flex items-center justify-center ${
+                  uploadStatus === "uploading" 
+                    ? "bg-blue-100" 
+                    : uploadStatus === "error"
+                    ? "bg-red-100"
+                    : "bg-gray2/20"
+                }`}
               >
-                <FileUp className="w-8 h-8" />
+                {uploadStatus === "uploading" ? (
+                  <Upload className="w-8 h-8 text-blue-600 animate-spin" />
+                ) : uploadStatus === "error" ? (
+                  <AlertCircle className="w-8 h-8 text-red-600" />
+                ) : (
+                  <FileUp className="w-8 h-8" />
+                )}
               </motion.div>
 
               <div className="space-y-2">
                 <h3 className="text-lg font-medium">
-                  {uploadStatus === "error"
-                    ? "Invalid file format"
+                  {uploadStatus === "uploading"
+                    ? "Uploading file..."
+                    : uploadStatus === "error"
+                    ? errorMessage || "Upload failed"
                     : "Drag a file here, or"}
                 </h3>
-                <button
-                  onClick={handleButtonClick}
-                  className="underline hover:text-gray2/80 font-medium"
-                >
-                  Choose a file to upload
-                </button>
+                {uploadStatus !== "uploading" && (
+                  <button
+                    onClick={handleButtonClick}
+                    disabled={uploadStatus === "uploading"}
+                    className="underline hover:text-gray2/80 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Choose a file to upload
+                  </button>
+                )}
                 <p className="text-sm text-gray2/70 mt-2">
                   Supported formats: PDF, DOC, DOCX
                 </p>
@@ -184,6 +241,11 @@ export const ResumeUpload = () => {
                   <p className="text-sm text-gray2/70">
                     {(file.size / 1024 / 1024).toFixed(2)} MB
                   </p>
+                  {uploadedFileData && (
+                    <p className="text-xs text-green-600 mt-1">
+                      ✓ Uploaded successfully
+                    </p>
+                  )}
                 </div>
               </div>
 

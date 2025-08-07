@@ -37,7 +37,7 @@ export function HowItWorksSection() {
   const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   
   return (
-    <section id="how-it-works" className="w-full py-20 flex items-center justify-center border-2 border-green-500">
+    <section id="how-it-works" className="w-full py-20 flex items-center justify-center">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
           <div className="inline-block rounded-full bg-primary/10 px-3 py-1 text-sm text-primary">

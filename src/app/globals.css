@@ -66,6 +66,18 @@
   --muted-foreground: hsl(0 39% 45%);
   --accent-foreground: hsl(0 0% 98%);
   --radius: 0.5rem;
+
+  --black-200: #081e13;
+  --black-100: #112c2e;
+  --off-white: #fbfaf6;
+  --white: #ffffff;
+
+  /* Primary Greens */
+  --green-500: #153e2a;
+  --green-400: #30715d;
+  --green-300: #6e9e8f;
+  --green-200: #00b684;
+  --green-100: #ccddc7;
 }
 
 .dark {
@@ -92,6 +104,18 @@
   --destructive-foreground: hsl(0 0% 86%);
   --muted-foreground: hsl(60 23% 70%);
   --accent-foreground: hsl(0 0% 18%);
+
+  --black-200: #081e13;
+  --black-100: #112c2e;
+  --off-white: #fbfaf6;
+  --white: #ffffff;
+
+  /* Primary Greens */
+  --green-500: #153e2a;
+  --green-400: #30715d;
+  --green-300: #6e9e8f;
+  --green-200: #00b684;
+  --green-100: #ccddc7;
 }
 
 @layer base {

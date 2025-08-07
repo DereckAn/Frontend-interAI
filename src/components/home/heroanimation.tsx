@@ -41,7 +41,7 @@ const HeroAnimation = () => {
       <TitleAnimation />
       <div className="w-full sm:h-[40vh] lg:h-[45vh] flex sm:flex-row flex-col-reverse">
         <div className="flex basis-1/2 border-2 border-green-100 flex-col p-5 justify-between shrink-0 gap-10 ">
-          <p className="lg:text-3xl max-w-2xl">
+          <p className="lg:text-3xl max-w-2xl font-soehne">
             Join hundreds of businesses who trust us to offer health insurance
             that works the way it should: affordable coverage that puts
             employees and their doctors in the driving seat.

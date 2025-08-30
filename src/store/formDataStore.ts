@@ -74,28 +74,53 @@ export const useFormDataStore = create<FormDataState>((set, get) => ({
     set({ isSubmitting: true });
 
     try {
-      // Prepare form data for API cal
-      const formData = new FormData();
       const state = get();
-    //   Imprimir(state);
+
+      // First, fetch topics and languages to map names to IDs
+      const [topicsResponse, languagesResponse] = await Promise.all([
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/topics`),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/languages`)
+      ]);
+
+      if (!topicsResponse.ok || !languagesResponse.ok) {
+        throw new Error("Failed to fetch topics or languages");
+      }
+
+      const topics = await topicsResponse.json();
+      const languages = await languagesResponse.json();
+
+      // Find the IDs for the selected topic and language
+      const selectedTopicObj = topics.find((topic: any) => topic.name === state.selectedTopic);
+      const selectedLanguageObj = languages.find((lang: any) => lang.name === state.programmingLanguage);
+
+      if (!selectedTopicObj) {
+        throw new Error(`Topic "${state.selectedTopic}" not found`);
+      }
+      if (!selectedLanguageObj) {
+        throw new Error(`Language "${state.programmingLanguage}" not found`);
+      }
+
+      // Prepare form data for API call
+      const formData = new FormData();
 
       // Add resume file if exists
       if (state.resumeFile) {
         formData.append("resume", state.resumeFile);
       }
 
-      // Add other data as JSON
+      // Add other data as JSON with correct field names expected by backend
       const jsonData = {
         userId: state.userId,
         jobDescription: state.jobDescription,
         difficultyLevel: state.difficultyLevel,
         yearsOfExperience: state.yearsOfExperience,
-        programmingLanguage: state.programmingLanguage,
-        selectedTopic: state.selectedTopic,
+        programmingLanguageId: selectedLanguageObj.id,
+        selectedTopicId: selectedTopicObj.id,
       };
-      console.log("Form data:", formData);
+
+      console.log("Form data being sent:", jsonData);
       Imprimir(jsonData);
-      setInfo("data sent")
+      setInfo("data sent");
 
       formData.append("data", JSON.stringify(jsonData));
 
@@ -109,7 +134,8 @@ export const useFormDataStore = create<FormDataState>((set, get) => ({
       );
 
       if (!response.ok) {
-        throw new Error("Failed to submit form data");
+        const errorText = await response.text();
+        throw new Error(`Failed to submit form data: ${response.status} - ${errorText}`);
       }
 
       // Handle successful submission
@@ -117,9 +143,11 @@ export const useFormDataStore = create<FormDataState>((set, get) => ({
       console.log("Form submitted successfully:", result);
 
       // You could return the result or store it in the state if needed
+      return result;
     } catch (error) {
       console.error("Error submitting form data:", error);
-      // Handle error state if needed
+      // Re-throw the error so the button component can handle it
+      throw error;
     } finally {
       set({ isSubmitting: false });
     }

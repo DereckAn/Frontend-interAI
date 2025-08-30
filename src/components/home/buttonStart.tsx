@@ -63,12 +63,14 @@ export const ButtonStart = () => {
       }
       
       // Enviar datos a la API
-      await submitFormData();
+      const result = await submitFormData();
+      console.log("Interview created:", result);
       
       // Redirigir a la página de entrevista
       router.push("/inteview");
     } catch (error) {
       console.error("Error starting interview:", error);
+      alert(`Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
       setIsLoading(false);
     }
   };

@@ -36,7 +36,6 @@ export const RegisterCard = ({
     defaultValues: {
       name: "",
       email: "",
-      username: "",
       password: "",
       confirmPassword: "",
     },
@@ -56,7 +55,6 @@ export const RegisterCard = ({
           body: JSON.stringify({
             name: data.name,
             email: data.email,
-            username: data.username,
             password: data.password,
             confirmPassword: data.confirmPassword,
           }),
@@ -131,26 +129,6 @@ export const RegisterCard = ({
             {errors.email && (
               <p className="text-sm text-red-500">
                 {String(errors.email.message)}
-              </p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <label
-              htmlFor="username"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Username
-            </label>
-            <input
-              {...register("username")}
-              id="username"
-              placeholder="johndoe123"
-              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            />
-            {errors.username && (
-              <p className="text-sm text-red-500">
-                {String(errors.username.message)}
               </p>
             )}
           </div>

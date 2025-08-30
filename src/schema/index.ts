@@ -28,11 +28,11 @@ export const registerFormSchema = z
     name: nameSchema,
     email: emailSchema,
     password: passwordSchema,
-    username: usernameSchema,
+    // username: usernameSchema,
     confirmPassword: passwordSchema,
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
+    message: "Passwords don't match",   
     path: ["confirmPassword"],
   });
 

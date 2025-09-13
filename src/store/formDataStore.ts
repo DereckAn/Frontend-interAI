@@ -90,8 +90,8 @@ export const useFormDataStore = create<FormDataState>((set, get) => ({
       const languages = await languagesResponse.json();
 
       // Find the IDs for the selected topic and language
-      const selectedTopicObj = topics.find((topic: any) => topic.name === state.selectedTopic);
-      const selectedLanguageObj = languages.find((lang: any) => lang.name === state.programmingLanguage);
+      const selectedTopicObj = topics.find((topic: any) => topic.id === state.selectedTopic);
+      const selectedLanguageObj = languages.find((lang: any) => lang.id === state.programmingLanguage);
 
       if (!selectedTopicObj) {
         throw new Error(`Topic "${state.selectedTopic}" not found`);

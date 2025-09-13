@@ -1,8 +1,8 @@
 {
-  "userId": "179ec5b1-f56c-4c90-a0e1-03b8f4dd664a",
-  "jobDescription": "hola esto es una prueba. ",
-  "difficultyLevel": "Junior",
-  "yearsOfExperience": 2,
-  "programmingLanguage": "00925906-d911-476d-bd03-3ed93f31e441",
-  "selectedTopic": "598b420f-88c7-4fd8-a703-49d363465ad2"
+  "userId": "5faa5486-059f-4f52-b0a5-b84c430e49c6",
+  "jobDescription": "test5",
+  "difficultyLevel": "Mid-Level",
+  "yearsOfExperience": 3.5,
+  "programmingLanguageId": "0c7559b3-c026-4a2e-a1f8-f0a9963f9a7b",
+  "selectedTopicId": "f810c054-b3ee-4045-9d13-f7fb77ec6283"
 }

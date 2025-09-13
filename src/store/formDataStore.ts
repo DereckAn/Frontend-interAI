@@ -40,7 +40,7 @@ const initialState = {
   userId: null,
   resumeFile: null,
   jobDescription: "",
-  difficultyLevel: "Mid-Level" as DifficultyLevel,
+  difficultyLevel: "MidLevel" as DifficultyLevel,
   yearsOfExperience: 3,
   programmingLanguage: null,
   selectedTopic: null,

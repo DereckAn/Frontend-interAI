@@ -7,7 +7,7 @@ import { Sparkles, Zap, Trophy } from 'lucide-react';
 import { useFormDataStore } from '@/src/store/formDataStore';
 
 export const DifficultySelector = () => {
-  const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel>('Mid-Level');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel>('MidLevel');
   const [yearsOfExperience, setYearsOfExperience] = useState<number>(3);
   
   // Agregar el store para guardar la dificultad
@@ -22,7 +22,7 @@ export const DifficultySelector = () => {
       yearsRange: [0, 2],
     },
     {
-      value: 'Mid-Level',
+      value: 'MidLevel',
       label: 'Mid-Level',
       icon: <Zap className="w-5 h-5" />,
       description: 'Intermediate topics and practical scenarios',

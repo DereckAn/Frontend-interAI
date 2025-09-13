@@ -49,4 +49,4 @@ interface CompleteInterviewDto {
   user: UserDto;
 }
 
-type DifficultyLevel = "Junior" | "Mid-Level" | "Senior";
+type DifficultyLevel = "Junior" | "MidLevel" | "Senior";

@@ -82,7 +82,7 @@ const jsonData = {
    ```typescript
    const difficultyOptions: DifficultyOption[] = [
      { value: 'Junior', label: 'Junior' },
-     { value: 'Mid-Level', label: 'Mid-Level' },
+     { value: 'MidLevel', label: 'Mid-Level' },
      { value: 'Senior', label: 'Senior' },
    ];
    ```
@@ -265,7 +265,7 @@ async session({ session, token }) {
 
 **TypeScript Definitions** (`src/types/interfaces.ts`):
 ```typescript
-type DifficultyLevel = "Junior" | "Mid-Level" | "Senior";
+type DifficultyLevel = "Junior" | "MidLevel" | "Senior";
 
 interface DifficultyOption {
   value: DifficultyLevel;
